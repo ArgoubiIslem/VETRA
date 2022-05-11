@@ -2,11 +2,45 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import NewProduct from './NewProduct'
-
+import { useRouter } from 'next/router'
+import { Confirm, Button, Loader } from 'semantic-ui-react'
+import EditProduct from '/pages/[id]/EditProduct'
 function Produits() {
   const [searchTerm, setSearchTerm] = useState('')
   const [productsData, setProductsData] = useState(null)
   const [newProduct, setNewProduct] = useState(false)
+  const [updateProduct, setUpdateProduct] = useState(false)
+  const [productId, setProductId] = useState()
+  const [confirm, setConfirm] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const router = useRouter()
+  useEffect(() => {
+    if (isDeleting) {
+      deleteProduct()
+    }
+  }, [isDeleting])
+
+  const open = () => setConfirm(true)
+
+  const close = () => setConfirm(false)
+
+  const deleteProduct = async () => {
+    const id = router.query.id
+    try {
+      const deleted = await fetch(`http://localhost:3000/api/products/${id}`, {
+        method: 'Delete',
+      })
+
+      // router.push("/");
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    close()
+  }
 
   useEffect(() => {
     async function getUser() {
@@ -192,74 +226,99 @@ function Produits() {
           </div>
         </div>
         <span className="mt-3 text-sm text-gray-500"></span>
-
-        {newProduct ? (
-          <NewProduct />
+        {updateProduct ? (
+          <EditProduct product={productId} />
         ) : (
-          <div className="grid grid-cols-4 grid-rows-2 gap-2 overflow-hidden">
-            {productsData
-              ?.filter((product) => {
-                if (searchTerm == '') {
-                  return product
-                } else if (
-                  product.nom.toLowerCase().includes(searchTerm.toLowerCase())
-                ) {
-                  return product
-                }
-              })
-              .map(function (product, i) {
-                console.log(productsData)
-                return (
-                  <div className="mt-10 w-full" key={product._id}>
-                    <div className=" mx-auto  w-full max-w-sm grid-cols-4 gap-10 ">
-                      <div className="">
-                        <div className="min-h-80  aspect-w-1 aspect-h-1 lg:aspect-none w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
-                          <img
-                            className="h-full w-full object-cover object-center lg:h-full lg:w-full "
-                            src={product.image}
-                            alt=""
-                          />
-                        </div>
-                        <div className="px-5 py-3">
-                          <span className="mt-2 text-gray-500">
-                            {product.nom}
-                          </span>
-                          <br></br>
-                          <span className="mt-2 text-gray-500">
-                            {product.prix} DT
-                          </span>
-                          <br></br>
-                          <Link href={`/${product._id}/edit`}>
-                            <button
-                              className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none"
-                              type="button"
-                            >
-                              Edit
-                            </button>
-                          </Link>
-                          <button
-                            className="focus:shadow-outline ml-8 rounded bg-red-500 py-2 px-4 font-bold text-white shadow hover:bg-red-500 focus:outline-none"
-                            type="button"
-                          >
-                            Supprimer
-                          </button>
+          <div className="mt-10">
+            {newProduct ? (
+              <NewProduct />
+            ) : (
+              <div className="grid grid-cols-4 grid-rows-2 gap-2 overflow-hidden">
+                {productsData
+                  ?.filter((product) => {
+                    if (searchTerm == '') {
+                      return product
+                    } else if (
+                      product.nom
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    ) {
+                      return product
+                    }
+                  })
+                  .map(function (product, i) {
+                    console.log(productsData)
+                    return (
+                      <div className="mt-10 w-full" key={product._id}>
+                        <div className=" mx-auto  w-full max-w-sm grid-cols-4 gap-10 ">
+                          <div className="">
+                            {isDeleting ? (
+                              <Loader active />
+                            ) : (
+                              <>
+                                <div className="min-h-80  aspect-w-1 aspect-h-1 lg:aspect-none w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
+                                  <img
+                                    className="h-full w-full object-cover object-center lg:h-full lg:w-full "
+                                    src={product.image}
+                                    alt=""
+                                  />
+                                </div>
+                                <div className="px-5 py-3">
+                                  <span className="mt-2 text-gray-500">
+                                    {product.nom}
+                                  </span>
+                                  <br></br>
+                                  <span className="mt-2 text-gray-500">
+                                    {product.prix} DT
+                                  </span>
+                                  <br></br>
+
+                                  <button
+                                    onClick={() =>
+                                      !updateProduct
+                                        ? setUpdateProduct(true) ||
+                                          setProductId(product)
+                                        : setUpdateProduct(false)
+                                    }
+                                    className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none"
+                                    type="button"
+                                  >
+                                    Edit
+                                  </button>
+
+                                  <button
+                                    className="focus:shadow-outline ml-8 rounded bg-red-500 py-2 px-4 font-bold text-white shadow hover:bg-red-500 focus:outline-none"
+                                    type="button"
+                                    onClick={open}
+                                  >
+                                    Supprimer
+                                  </button>
+                                </div>
+                              </>
+                            )}
+                            <Confirm
+                              open={confirm}
+                              onCancel={close}
+                              onConfirm={handleDelete}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )
-              })}
+                    )
+                  })}
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   )
 }
-// produits.getInitialProps = async () => {
-//   const res = await fetch('http://localhost:3000/api/products')
-//   const { data } = await res.json()
+Produits.getInitialProps = async ({ query: { id } }) => {
+  const res = await fetch(`http://localhost:3000/api/products/${id}`)
+  const { data } = await res.json()
 
-//   return { products: data }
-// }
+  return { products: data }
+}
 
 export default Produits

@@ -8,7 +8,7 @@ function Carousels() {
     'https://i.pinimg.com/originals/16/b4/92/16b492e15c32b195c52598b82a6504d2.gif',
   ])
   function next() {
-    if (count < 4) {
+    if (count < 2) {
       setCount(count + 1)
     }
   }

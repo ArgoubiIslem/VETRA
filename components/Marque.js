@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import Marque from '../components/Marque'
 
-function Filter() {
+function Marque() {
   return (
     <div className="container mx-auto flex px-6 ">
       <div className="bg-white-100 fixed inset-y-0 left-0 z-30 w-64  transform transition duration-300 lg:static lg:translate-x-0">
@@ -13,7 +12,7 @@ function Filter() {
                 {' '}
                 <fieldset>
                   <span class="mb-1 p-2 font-semibold text-gray-800">
-                    CATÉGORIES
+                    MARQUE
                   </span>
                   <br></br>
                   <br></br>
@@ -83,4 +82,4 @@ function Filter() {
   )
 }
 
-export default Filter
+export default Marque

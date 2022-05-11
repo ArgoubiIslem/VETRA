@@ -1,10 +1,65 @@
-import React, { useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Link from 'next/link'
+import { DataContext } from '../store/GlobalState'
+import { postData } from '../utils/fetchData'
+import { useRouter } from 'next/router'
 
 function Headers() {
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [showRecuperation, setShowRecuperation] = useState(false)
+  const initialState = {
+    nomP: '',
+    email: '',
+    password: '',
+    cf_password: '',
+  }
+  const [userData, setUserData] = useState(initialState)
+  const { nomP, email, password, cf_password } = userData
+
+  const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
+
+  const router = useRouter()
+  // validate function
+  function validateEmail(email) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(email)
+  }
+  const valid = (nomP, email, password, cf_password) => {
+    if (!nomP || !email || !password) return 'Please add all fields.'
+
+    if (!validateEmail(email)) return 'Invalid emails.'
+
+    if (password.length < 6) return 'Password must be at least 6 characters.'
+
+    if (password !== cf_password) return 'Confirm password did not match.'
+  }
+  const handleChangeInput = (e) => {
+    const { nomP, value } = e.target
+    setUserData({ ...userData, [nomP]: value })
+    dispatch({ type: 'NOTIFY', payload: {} })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const errMsg = valid(nomP, email, password, cf_password)
+    if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
+
+    dispatch({ type: 'NOTIFY', payload: { loading: true } })
+
+    const res = await postData('auth/register', userData)
+
+    if (res.err)
+      return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+
+    return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+  }
+
+  useEffect(() => {
+    if (Object.keys(auth).length !== 0) router.push('/')
+  }, [auth])
 
   return (
     <div className="">
@@ -342,7 +397,7 @@ function Headers() {
           </h6>
           <form>
             <div className="mb-4">
-              <label className="mb-1 block" for="email">
+              <label className="mb-1 block" htmlFor="email">
                 Email
               </label>
               <input
@@ -410,87 +465,83 @@ function Headers() {
           <h6 className="mb-1 block font-extrabold">
             CONNECTEZ-VOUS A VOTRE COMPTE
           </h6>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="mb-1 block" for="nomprenpom">
-                Nom et prénom
-              </label>
+              <label className="mb-1 block">Nom et prénom</label>
               <input
-                id="nomprenom"
+                id="nomP"
                 type="text"
-                name="nomprenom"
+                onChange={handleChangeInput}
+                name="nomP"
                 className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
               />
             </div>
+
             <div className="mb-4">
-              <label className="mb-1 block" for="adresse">
-                Adresse
-              </label>
-              <input
-                id="adresse"
-                type="text"
-                name="adresse"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block" for="numtel">
-                Numéro de téléphone
-              </label>
-              <input
-                id="numtel"
-                type="tel"
-                name="numtel"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block" for="email">
+              <label className="mb-1 block" htmlFor="email">
                 Email
               </label>
               <input
-                id="email"
-                type="text"
                 name="email"
+                onChange={handleChangeInput}
+                id="exampleInputEmail1"
+                type="text"
                 className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
               />
+              <small id="emailHelp" className="form-text text-muted">
+                Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.
+              </small>
             </div>
             <div className="mb-4">
-              <label className="mb-1 block" for="password">
+              <label className="mb-1 block" htmlFor="password">
                 Mot de passe
               </label>
               <input
-                id="password"
+                id="exampleInputPassword1"
+                onChange={handleChangeInput}
                 type="password"
                 name="password"
                 className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
               />
             </div>
+            <div className="mb-4">
+              <label className="mb-1 block" htmlFor="password">
+                Confirmer mot de passe
+              </label>
+              <input
+                name="cf_password"
+                onChange={handleChangeInput}
+                id="exampleInputPassword2"
+                type="password"
+                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
+              />
+            </div>
 
             <div className="mt-6">
-              <Link href="/Dashboard">
-                <a className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 font-semibold capitalize text-white transition hover:bg-blue-700 focus:border-blue-700 focus:outline-none focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25">
-                  Enregistrer
-                </a>
-              </Link>
-            </div>
-
-            <div className="mt-6 text-center">
-              Vous avez déjà un compte?
-              {/* <Link href="/Login"> */}
-              <a
-                className="underline"
-                onClick={() =>
-                  !showLogin
-                    ? setShowLogin(true) || setShowRegister(false)
-                    : setShowLogin(false) || setShowRegister(false)
-                }
+              <button
+                type="submit"
+                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 font-semibold capitalize text-white transition hover:bg-blue-700 focus:border-blue-700 focus:outline-none focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25"
               >
-                Connectez-vous!
-              </a>
-              {/* </Link> */}
+                Enregistrer
+              </button>
             </div>
           </form>
+
+          <div className="mt-6 text-center">
+            Vous avez déjà un compte?
+            {/* <Link href="/Login"> */}
+            <a
+              className="underline"
+              onClick={() =>
+                !showLogin
+                  ? setShowLogin(true) || setShowRegister(false)
+                  : setShowLogin(false) || setShowRegister(false)
+              }
+            >
+              Connectez-vous!
+            </a>
+            {/* </Link> */}
+          </div>
         </div>
       ) : null}
       {showRecuperation ? (
@@ -506,7 +557,7 @@ function Headers() {
             </p>
             <form>
               <div className="mb-4">
-                <label className="mb-1 block" for="email">
+                <label className="mb-1 block" htmlFor="email">
                   Email
                 </label>
                 <input

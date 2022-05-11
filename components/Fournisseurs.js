@@ -3,12 +3,17 @@ import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 import { Confirm, Button, Loader } from 'semantic-ui-react'
+import NewFournisseur from './NewFournisseur'
+import EditFournisseur from '/pages/[id]/EditFournisseur'
 function Fournisseurs() {
   const [searchTerm, setSearchTerm] = useState('')
   const [confirm, setConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
   const [fournisseursData, setFournisseursData] = useState(null)
+  const [newFournisseur, setNewFournisseur] = useState(false)
+  const [updateFournisseur, setUpdateFournisseur] = useState(false)
+  const [fournisseurId, setFournisseurId] = useState()
   useEffect(() => {
     if (isDeleting) {
       deleteFournisseur()
@@ -75,7 +80,9 @@ function Fournisseurs() {
         > */}
           <button
             onClick={() =>
-              !newProduct ? setNewProduct(true) : setNewProduct(false)
+              !newFournisseur
+                ? setNewFournisseur(true)
+                : setNewFournisseur(false)
             }
             className="bg-grey-light hover:bg-grey text-grey-darkest inline-flex items-center rounded bg-green-200 py-2 px-4 font-bold"
           >
@@ -145,151 +152,167 @@ function Fournisseurs() {
                 </svg>
               </button>
             </div>
-            <div className="mt-10">
-              <div className="my-6 rounded bg-white shadow-md">
-                <table className="w-full rounded shadow-lg">
-                  <thead>
-                    <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
-                      <th className="py-3 px-6 text-left">ID</th>
-                      <th className="py-3 px-6 text-left">Nom</th>
-                      <th className="py-3 px-6 text-center">Email</th>
-                      <th className="py-3 px-6 text-center">Tel</th>
-                      <th className="py-3 px-6 text-center">Adresse</th>
-                      <th className="py-3 px-6 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-sm font-light text-gray-600">
-                    {fournisseursData
-                      ?.filter((fournisseur) => {
-                        if (searchTerm == '') {
-                          return fournisseur
-                        } else if (
-                          fournisseur.nom
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        ) {
-                          return fournisseur
-                        }
-                      })
-                      .map(function (fournisseur, i) {
-                        console.log(fournisseursData)
-                        return (
-                          <tr className="border-b border-gray-200 hover:bg-gray-100">
-                            {isDeleting ? (
-                              <Loader active />
-                            ) : (
-                              <>
-                                <td className="whitespace-nowrap py-3 px-6 text-left">
-                                  <div className="flex items-center">
-                                    <div className="mr-2"></div>
-                                    <span className="font-medium">#</span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-left">
-                                  <div className="flex items-center">
-                                    <div className="mr-2">
-                                      <img
-                                        className="h-6 w-6 rounded-full"
-                                        src={fournisseur.image}
-                                      />
-                                    </div>
-                                    <span>
-                                      {fournisseur.nom} {fournisseur.Prenom}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="flex items-center justify-center">
-                                    {fournisseur.email}
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    <span className="rounded-full bg-green-200 py-1 px-3 text-xs text-green-600">
-                                      {fournisseur.tel}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    {fournisseur.adresse}
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                        />
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                        />
-                                      </svg>
-                                    </div>
-                                    <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                                      <Link
-                                        href={`/${fournisseur._id}/editFournissseur`}
-                                      >
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          stroke="currentColor"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                          />
-                                        </svg>
-                                      </Link>
-                                    </div>
-                                    <button onClick={open}>
-                                      <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          stroke="currentColor"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                          />
-                                        </svg>
+            {updateFournisseur ? (
+              <EditFournisseur fournisseur={fournisseurId} />
+            ) : (
+              <div className="mt-10">
+                {newFournisseur ? (
+                  <NewFournisseur />
+                ) : (
+                  <div className="my-6 rounded bg-white shadow-md">
+                    <table className="w-full rounded shadow-lg">
+                      <thead>
+                        <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
+                          <th className="py-3 px-6 text-left">ID</th>
+                          <th className="py-3 px-6 text-left">Nom</th>
+                          <th className="py-3 px-6 text-center">Email</th>
+                          <th className="py-3 px-6 text-center">Tel</th>
+                          <th className="py-3 px-6 text-center">Adresse</th>
+                          <th className="py-3 px-6 text-center">Actions</th>
+                        </tr>
+                      </thead>
+
+                      <tbody className="text-sm font-light text-gray-600">
+                        {fournisseursData
+                          ?.filter((fournisseur) => {
+                            if (searchTerm == '') {
+                              return fournisseur
+                            } else if (
+                              fournisseur.nom
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase())
+                            ) {
+                              return fournisseur
+                            }
+                          })
+                          .map(function (fournisseur, i) {
+                            console.log(fournisseursData)
+                            return (
+                              <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                {isDeleting ? (
+                                  <Loader active />
+                                ) : (
+                                  <>
+                                    <td className="whitespace-nowrap py-3 px-6 text-left">
+                                      <div className="flex items-center">
+                                        <div className="mr-2"></div>
+                                        <span className="font-medium">#</span>
                                       </div>
-                                    </button>
-                                  </div>
-                                </td>
-                              </>
-                            )}
-                            <Confirm
-                              open={confirm}
-                              onCancel={close}
-                              onConfirm={handleDelete}
-                            />
-                          </tr>
-                        )
-                      })}
-                  </tbody>
-                </table>
+                                    </td>
+                                    <td className="py-3 px-6 text-left">
+                                      <div className="flex items-center">
+                                        <div className="mr-2">
+                                          <img
+                                            className="h-6 w-6 rounded-full"
+                                            src={fournisseur.image}
+                                          />
+                                        </div>
+                                        <span>
+                                          {fournisseur.nom} {fournisseur.Prenom}
+                                        </span>
+                                      </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                      <div className="flex items-center justify-center">
+                                        {fournisseur.email}
+                                      </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                      <div className="item-center flex justify-center">
+                                        <span className="rounded-full bg-green-200 py-1 px-3 text-xs text-green-600">
+                                          {fournisseur.tel}
+                                        </span>
+                                      </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                      <div className="item-center flex justify-center">
+                                        {fournisseur.adresse}
+                                      </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                      <div className="item-center flex justify-center">
+                                        <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                            />
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                            />
+                                          </svg>
+                                        </div>
+
+                                        <button
+                                          onClick={() =>
+                                            !updateFournisseur
+                                              ? setUpdateFournisseur(true) ||
+                                                setFournisseurId(fournisseur)
+                                              : setUpdateFournisseur(false)
+                                          }
+                                        >
+                                          <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                              />
+                                            </svg>
+                                          </div>
+                                        </button>
+
+                                        <button onClick={open}>
+                                          <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                              />
+                                            </svg>
+                                          </div>
+                                        </button>
+                                      </div>
+                                    </td>
+                                  </>
+                                )}
+                                <Confirm
+                                  open={confirm}
+                                  onCancel={close}
+                                  onConfirm={handleDelete}
+                                />
+                              </tr>
+                            )
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

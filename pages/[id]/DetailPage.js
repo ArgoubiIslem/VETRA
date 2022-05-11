@@ -246,7 +246,7 @@ const DetailPage = ({ product }) => {
                       </svg>
                       Ajouter au panier
                     </button>
-                    <button className="ml-4 inline-flex h-10 w-10 items-center justify-center rounded-full border-0 bg-gray-800 p-0 text-gray-500">
+                    <button className="ml-4 inline-flex h-10 w-10 items-center justify-center rounded-full border-0 bg-pink-600 p-0 text-gray-100">
                       <svg
                         fill="currentColor"
                         strokeLinecap="round"

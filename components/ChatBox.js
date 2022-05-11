@@ -7,7 +7,7 @@ import {
   getBotAnswer,
   fetchQuery,
 } from '../utils/helper'
-export default function ChatBox({ interchange }) {
+export default function ChatBox({ interchanges }) {
   const [userQuestion, setUserQuestion] = useState('')
   const [allow, setAllow] = useState(false)
   const [Interchange, setInterchange] = useState([])
@@ -18,10 +18,10 @@ export default function ChatBox({ interchange }) {
     setInterchange([
       {
         owner: false,
-        text: tranformInterchanges(interchange, true),
+        text: tranformInterchanges(interchanges, true),
       },
     ])
-  }, [interchange])
+  }, [interchanges])
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!userQuestion || !allow) return
@@ -36,7 +36,7 @@ export default function ChatBox({ interchange }) {
     setInterchange(newInterchange)
     setUserQuestion('')
     setAllow(false)
-    getBotAnswer(interchange, setInterchange, uQ, newInterchange, setAllow)
+    getBotAnswer(interchanges, setInterchange, uQ, newInterchange, setAllow)
   }
 
   return (
@@ -91,7 +91,7 @@ export default function ChatBox({ interchange }) {
               {/* <!-- chats --> */}
               <form onSubmit={handleSubmit}>
                 <div class="chat-services expand flex flex-col overflow-auto bg-gray-200 px-2">
-                  {Interchange.map((chat, i) =>
+                  {interchanges?.map((chat, i) =>
                     chat.owner ? (
                       <div
                         key={i}
@@ -159,10 +159,10 @@ export default function ChatBox({ interchange }) {
   )
 }
 export async function getStaticProps() {
-  const interchange = await fetchQuery('interchange')
+  const interchanges = await fetchQuery('interchanges')
   return {
     props: {
-      interchange,
+      interchanges,
     },
   }
 }

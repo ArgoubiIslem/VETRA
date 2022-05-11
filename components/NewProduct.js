@@ -7,8 +7,8 @@ import Loader from './Loader'
 import ListFemme from './ListFemme'
 import ListHomme from './ListHomme'
 import ListEnfant from './ListEnfant'
-import List from './List'
 const NewProduct = () => {
+  const [productsData, setProductsData] = useState(null)
   const [showListFemme, setShowListFemme] = useState(false)
   const [showListHomme, setShowListHomme] = useState(false)
   const [showListEnfant, setShowListEnfant] = useState(false)
@@ -25,36 +25,8 @@ const NewProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
-  const [productsData, setProductsData] = useState(null)
-  const [productsCatData, setProductsCatData] = useState()
-  const [listSous, setListSous] = useState([])
-
   const router = useRouter()
   useEffect(() => {
-    async function getCategorie() {
-      try {
-        const response = await fetch('http://localhost:3000/api/categories')
-
-        if (!response.ok) {
-          throw new Error(`Error! status: ${response.status}`)
-        }
-
-        const result = await response.json()
-        console.log(result['data'])
-        setProductsData(result['data'])
-        // setListSous(result['data']['categorieLib'])
-        return result
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    // declare the async data fetching function
-
-    // call the function
-    getCategorie()
-      // make sure to catch any error
-      .catch(console.error)
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')
       if (Object.keys(errors).length === 0) {
@@ -64,11 +36,10 @@ const NewProduct = () => {
       }
     }
   }, [isSubmitting])
-
   const createProduct = async () => {
     setIsLoading(true)
     try {
-      const res = await fetch('http://localhost:3000/api/categories', {
+      const res = await fetch('http://localhost:3000/api/products', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -97,7 +68,31 @@ const NewProduct = () => {
       [e.target.name]: e.target.value,
     })
   }
-  // console.log(productsCatData)
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await fetch('http://localhost:3000/api/products')
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`)
+        }
+
+        const result = await response.json()
+        console.log(result['data'])
+        setProductsData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+
   return (
     <div className="container mx-auto px-4 py-16 pt-4">
       <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden  font-sans  ">
@@ -191,6 +186,39 @@ const NewProduct = () => {
                     onChange={handleChange}
                   />
                 </div>
+                <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
+                  <label className=" text-sm text-gray-600" for="cus_email">
+                    Categorie
+                  </label>
+
+                  <select
+                    onChange={handleChange}
+                    name="categorie"
+                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                  >
+                    <option placeholder="select"></option>
+                    {productsData?.map(function (product, i) {
+                      console.log(productsData)
+                      return (
+                        <option
+                          key={product._id}
+                          value={product.categorie}
+                          data-val={product.categorie}
+                        >
+                          {product.categorie}
+                        </option>
+                      )
+                    })}
+                  </select>
+
+                  <input
+                    list="browsers"
+                    name="categorie"
+                    onChange={handleChange}
+                    placeholder="Autre catégorie"
+                    class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
+                  />
+                </div>
                 {/* <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
                   <label className=" text-sm text-gray-600" for="cus_email">
                     catégorie
@@ -221,14 +249,16 @@ const NewProduct = () => {
                   <div class="mx-auto max-w-md">
                     <div class="relative">
                       <div class="flex h-10 items-center rounded border border-gray-200 bg-gray-200">
-                        <input
-                          value="Categorie"
-                          name="select"
+                        {/* <input
                           class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
-                          checked
-                        />
+                          name="categorie"
+                          type="text"
+                          placeholder="categorie"
+                          required
+                          onChange={handleChange}
+                        /> */}
 
-                        <button class="cursor-pointer text-gray-300 outline-none transition-all hover:text-gray-600 focus:outline-none">
+                        {/* <button class="cursor-pointer text-gray-300 outline-none transition-all hover:text-gray-600 focus:outline-none">
                           <svg
                             class="mx-2 h-4 w-4 fill-current"
                             xmlns="http://www.w3.org/2000/svg"
@@ -241,8 +271,8 @@ const NewProduct = () => {
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                           </svg>
-                        </button>
-                        <label
+                        </button> */}
+                        {/* <label
                           for="show_more"
                           class="cursor-pointer border-l border-gray-200 text-gray-300 outline-none transition-all hover:text-gray-600 focus:outline-none"
                         >
@@ -257,24 +287,18 @@ const NewProduct = () => {
                           >
                             <polyline points="18 15 12 9 6 15"></polyline>
                           </svg>
-                        </label>
+                        </label> */}
                       </div>
 
-                      <input
+                      {/* <input
                         type="checkbox"
                         name="show_more"
                         id="show_more"
                         class="peer hidden"
                         checked
+                        
                       />
-                      {productsData
-                        ? productsData.map(function (categorie, i) {
-                            // console.log(productsData)
-                            return <div key={i}>{categorie.categorieLib}</div>
-                          })
-                        : null}
-
-                      {/* <div class="duration-250 absolute  mt-1 hidden w-full scale-0 transform flex-col overflow-hidden rounded border border-gray-200 bg-white shadow transition ease-in-out group-hover:scale-100 peer-checked:flex">
+                      <div class="duration-250 absolute  mt-1 hidden w-full scale-0 transform flex-col overflow-hidden rounded border border-gray-200 bg-white shadow transition ease-in-out group-hover:scale-100 peer-checked:flex">
                         <div class="block border-l-4 border-transparent p-2 hover:bg-gray-200 group-hover:border-blue-600">
                           <button
                             onClick={() =>
@@ -306,23 +330,43 @@ const NewProduct = () => {
                             }
                           >
                             Enfant
-                          </button>
-                        </div>
+                          </button> */}
+                      {/* </div>
                       </div> */}
+
+                      {/* <div>
+                      <label
+                        className="block text-sm text-gray-600"
+                        for="cus_name"
+                      >
+                        catégorie
+                      </label>
+
+                      <div>
+                        <input
+                          class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
+                          name="categorie"
+                          onChange={handleChange}
+                        />
+
+                        <datalist id="browsers">
+                          {productsData?.map(function (product, i) {
+                            console.log(productsData)
+                            return <input value={product.categorie} />
+                          })}
+                        </datalist>
+                      </div>
+                    </div> */}
                     </div>
                   </div>
                 </div>
-                {/* </div> */}
 
-                <div className="-mx-1 mt-2 inline-block w-1/2 pl-3"></div>
-                {productsData
-                  ? productsData.map(function (categorie, i) {
-                      // console.log(productsData)
-                      if (categorie.categorieLib == 'Femme') {
-                        return <List cat={categorie.categorieLib} />
-                      }
-                    })
-                  : null}
+                {/* <div className="-mx-1 mt-2 inline-block w-1/2 pl-3">
+                  {showListFemme ? <ListFemme /> : null}
+                  {showListHomme ? <ListHomme /> : null}
+                  {showListEnfant ? <ListEnfant /> : null}
+                </div> */}
+
                 <div className="">
                   <label className="block text-sm text-gray-600" for="cus_name">
                     Statut

@@ -2,11 +2,49 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import NewEvent from './NewEvent'
+import { useRouter } from 'next/router'
+import { Confirm, Button, Loader } from 'semantic-ui-react'
+import EditEvenement from '/pages/[id]/EditEvenement'
 
-function evenement() {
+function Evenement() {
   const [searchTerm, setSearchTerm] = useState('')
   const [evenementsData, setEvenementsData] = useState(null)
   const [newEvent, setNewEvent] = useState(false)
+  const [updateEvenement, setUpdateEvenement] = useState(false)
+  const [evenementId, setEvenementId] = useState()
+  const [confirm, setConfirm] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const router = useRouter()
+  useEffect(() => {
+    if (isDeleting) {
+      deleteEvenement()
+    }
+  }, [isDeleting])
+
+  const open = () => setConfirm(true)
+
+  const close = () => setConfirm(false)
+
+  const deleteEvenement = async () => {
+    const id = router.query.id
+    try {
+      const deleted = await fetch(
+        `http://localhost:3000/api/evenements/${id}`,
+        {
+          method: 'Delete',
+        }
+      )
+
+      // router.push("/");
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    close()
+  }
 
   useEffect(() => {
     async function getUser() {
@@ -142,130 +180,159 @@ function evenement() {
           </div>
         </form>
       </div> */}
-      <h1 className="mb-10 text-3xl font-medium text-gray-700">
-        List des Evenements
-      </h1>
-      {newEvent ? (
-        <NewEvent />
+      {updateEvenement ? (
+        <EditEvenement evenement={evenementId} />
       ) : (
-        <div className="my-6 rounded bg-white shadow-md">
-          <table className="w-full rounded shadow-lg">
-            <thead>
-              <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
-                <th className="py-3 px-6 text-left">ID</th>
-                <th className="py-3 px-6 text-left">Description</th>
-                <th className="py-3 px-6 text-center">Date</th>
+        <div className="mt-10">
+          <h1 className="mb-10 text-3xl font-medium text-gray-700">
+            List des Evenements
+          </h1>
+          {newEvent ? (
+            <NewEvent />
+          ) : (
+            <div className="my-6 rounded bg-white shadow-md">
+              <table className="w-full rounded shadow-lg">
+                <thead>
+                  <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
+                    <th className="py-3 px-6 text-left">ID</th>
+                    <th className="py-3 px-6 text-left">Description</th>
+                    <th className="py-3 px-6 text-center">Date</th>
 
-                <th className="py-3 px-6 text-center">Actions</th>
-              </tr>
-            </thead>
+                    <th className="py-3 px-6 text-center">Actions</th>
+                  </tr>
+                </thead>
 
-            <tbody className="text-sm font-light text-gray-600">
-              {evenementsData
-                ?.filter((evenement) => {
-                  if (searchTerm == '') {
-                    return evenement
-                  } else if (
-                    evenement.description
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
-                  ) {
-                    return evenement
-                  }
-                })
-                .map(function (evenement, i) {
-                  console.log(evenementsData)
-                  return (
-                    <tr
-                      className="border-b border-gray-200 hover:bg-gray-100"
-                      key={evenement._id}
-                    >
-                      <td className="whitespace-nowrap py-3 px-6 text-left">
-                        <div className="flex items-center">
-                          <div className="mr-2"></div>
-                          <span className="font-medium">#</span>
-                        </div>
-                      </td>
+                <tbody className="text-sm font-light text-gray-600">
+                  {evenementsData
+                    ?.filter((evenement) => {
+                      if (searchTerm == '') {
+                        return evenement
+                      } else if (
+                        evenement.description
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                      ) {
+                        return evenement
+                      }
+                    })
+                    .map(function (evenement, i) {
+                      console.log(evenementsData)
+                      return (
+                        <tr
+                          className="border-b border-gray-200 hover:bg-gray-100"
+                          key={evenement._id}
+                        >
+                          {isDeleting ? (
+                            <Loader active />
+                          ) : (
+                            <>
+                              <td className="whitespace-nowrap py-3 px-6 text-left">
+                                <div className="flex items-center">
+                                  <div className="mr-2"></div>
+                                  <span className="font-medium">#</span>
+                                </div>
+                              </td>
 
-                      <td className="py-3 px-6 text-left">
-                        <div className="flex items-center">
-                          <span>{evenement.description}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-6 text-center">
-                        <div className="flex items-center justify-center">
-                          {evenement.date}
-                        </div>
-                      </td>
+                              <td className="py-3 px-6 text-left">
+                                <div className="flex items-center">
+                                  <span>{evenement.description}</span>
+                                </div>
+                              </td>
+                              <td className="py-3 px-6 text-center">
+                                <div className="flex items-center justify-center">
+                                  {evenement.date}
+                                </div>
+                              </td>
 
-                      <td className="py-3 px-6 text-center">
-                        <div className="item-center flex justify-center">
-                          <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                              />
-                            </svg>
-                          </div>
+                              <td className="py-3 px-6 text-center">
+                                <div className="item-center flex justify-center">
+                                  <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                      />
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                      />
+                                    </svg>
+                                  </div>
 
-                          <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                            <Link href={`/${evenement._id}/editEvenement`}>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                />
-                              </svg>
-                            </Link>
-                          </div>
-
-                          <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })}
-            </tbody>
-          </table>
+                                  <button
+                                    onClick={() =>
+                                      !updateEvenement
+                                        ? setUpdateEvenement(true) ||
+                                          setEvenementId(evenement)
+                                        : setUpdateEvenement(false)
+                                    }
+                                  >
+                                    <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth="2"
+                                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </button>
+                                  <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </td>
+                            </>
+                          )}
+                          <Confirm
+                            open={confirm}
+                            onCancel={close}
+                            onConfirm={handleDelete}
+                          />
+                        </tr>
+                      )
+                    })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
     </div>
   )
 }
+Evenement.getInitialProps = async ({ query: { id } }) => {
+  const res = await fetch(`http://localhost:3000/api/evenements/${id}`)
+  const { data } = await res.json()
 
-export default evenement
+  return { evenements: data }
+}
+
+export default Evenement

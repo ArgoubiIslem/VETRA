@@ -4,10 +4,11 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
-const editEvenement = ({ evenement }) => {
+const EditEvenement = ({ evenement }) => {
+  console.log(evenement)
   const [form, setForm] = useState({
-    description: evenement.description,
-    date: evenement.date,
+    description: evenement?.description,
+    date: evenement?.date,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -27,7 +28,7 @@ const editEvenement = ({ evenement }) => {
     setIsLoading(true)
     try {
       const res = await fetch(
-        `http://localhost:3000/api/evenements/${router.query.id}`,
+        `http://localhost:3000/api/evenements/${evenement?.id}`,
         {
           method: 'PUT',
           headers: {
@@ -121,10 +122,10 @@ const editEvenement = ({ evenement }) => {
     </div>
   )
 }
-editEvenement.getInitialProps = async ({ query: { id } }) => {
+EditEvenement.getInitialProps = async ({ query: { id } }) => {
   const res = await fetch(`http://localhost:3000/api/evenements/${id}`)
   const { data } = await res.json()
 
   return { evenement: data }
 }
-export default editEvenement
+export default EditEvenement

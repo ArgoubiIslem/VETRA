@@ -5,14 +5,16 @@ import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
 const EditCategorie = ({ categorie }) => {
+  console.log(categorie)
   const [form, setForm] = useState({
-    categorieLib: categorie.categorieLib,
-    description: categorie.description,
+    categorieLib: categorie?.categorieLib,
+    description: categorie?.description,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const router = useRouter()
+
   useEffect(() => {
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')
@@ -27,7 +29,7 @@ const EditCategorie = ({ categorie }) => {
     setIsLoading(true)
     try {
       const res = await fetch(
-        `http://localhost:3000/api/categories/${router.query.id}`,
+        `http://localhost:3000/api/categories/${categorie?.id}`,
         {
           method: 'PUT',
           headers: {
@@ -49,7 +51,7 @@ const EditCategorie = ({ categorie }) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    validate()
+
     setIsSubmitting(true)
   }
   const handleChange = (e) => {
@@ -57,19 +59,6 @@ const EditCategorie = ({ categorie }) => {
       ...form,
       [e.target.name]: e.target.value,
     })
-  }
-
-  const validate = () => {
-    let err = {}
-
-    if (!form.categorieLib) {
-      err.categorieLib = 'categorieLib est obligatoire'
-    }
-    if (!form.description) {
-      err.description = 'descriptionest obligatoire'
-    }
-
-    setErrors(err)
   }
 
   return (
@@ -112,8 +101,7 @@ const EditCategorie = ({ categorie }) => {
                     name="description"
                     type="text"
                     value={form.description}
-                    aria-label="Email"
-                    required
+                    required=""
                     onChange={handleChange}
                   />
                 </div>

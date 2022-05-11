@@ -4,16 +4,16 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
-const EditProduct = ({ product }) => {
+
+const EditFournisseur = ({ fournisseur }) => {
+  console.log(fournisseur)
   const [form, setForm] = useState({
-    nom: product.nom,
-    image: product.image,
-    prix: product.prix,
-    description: product.description,
-    countInStock: product.countInStock,
-    categorie: product.categorie,
-    statut: product.statut,
-    marque: product.marque,
+    nom: fournisseur?.nom,
+    Prenom: fournisseur?.Prenom,
+    image: fournisseur?.image,
+    email: fournisseur?.email,
+    tel: fournisseur?.tel,
+    adresse: fournisseur?.adresse,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -23,17 +23,17 @@ const EditProduct = ({ product }) => {
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')
       if (Object.keys(errors).length === 0) {
-        updateProduct()
+        updateFournisseur()
       } else {
         alert('please fill the required fields !')
       }
     }
   }, [isSubmitting])
-  const updateProduct = async () => {
+  const updateFournisseur = async () => {
     setIsLoading(true)
     try {
       const res = await fetch(
-        `http://localhost:3000/api/products/${router.query.id}`,
+        `http://localhost:3000/api/fournisseurs/${fournisseur?.id}`,
         {
           method: 'PUT',
           headers: {
@@ -70,7 +70,7 @@ const EditProduct = ({ product }) => {
       <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
         <div className="w-full lg:w-5/6">
           <h3 className="mb-8 text-3xl font-medium text-gray-700">
-            Modifier Produits
+            Modifier Categorie
           </h3>
           <div class="leading-loose">
             {isLoading ? (
@@ -82,7 +82,7 @@ const EditProduct = ({ product }) => {
               >
                 <div class="">
                   <label class="text-gray-00 block text-sm" for="cus_name">
-                    Titre de produit
+                    Fournisseur
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-5 py-1 text-gray-700"
@@ -96,114 +96,76 @@ const EditProduct = ({ product }) => {
                   />
                 </div>
                 <div class="mt-2">
-                  <label class="block text-sm text-gray-600" for="cus_email">
-                    Image de produit
+                  <label class=" block text-sm text-gray-600" for="cus_email">
+                    Prenom
                   </label>
                   <input
-                    class="w-full rounded  bg-gray-200 px-5 py-4 text-gray-700"
+                    class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
-                    name="image"
-                    type="file"
-                    required=""
+                    name="Prenom"
+                    type="text"
+                    value={form.Prenom}
                     aria-label="Email"
+                    required
                     onChange={handleChange}
                   />
                 </div>
                 <div class="mt-2">
                   <label class=" block text-sm text-gray-600" for="cus_email">
-                    Description
+                    image
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
-                    name="description"
+                    name="image"
                     type="text"
-                    value={form.description}
+                    value={form.image}
                     aria-label="Email"
                     required
                     onChange={handleChange}
                   />
                 </div>
-
-                <div class="mt-2 inline-block w-1/2 pr-1">
-                  <label class=" text-sm text-gray-600" for="cus_email">
-                    Prix
+                <div class="mt-2">
+                  <label class=" block text-sm text-gray-600" for="cus_email">
+                    email
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
-                    name="prix"
-                    type="number"
-                    value={form.prix}
-                    required
+                    name="email"
+                    type="text"
+                    value={form.email}
                     aria-label="Email"
+                    required
                     onChange={handleChange}
                   />
                 </div>
-                <div class="-mx-1 mt-2 inline-block w-1/2 pl-1">
-                  <label class=" text-sm text-gray-600" for="cus_email">
-                    Compter en stock
+                <div class="mt-2">
+                  <label class=" block text-sm text-gray-600" for="cus_email">
+                    tel
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
-                    name="countInStock"
-                    type="number"
+                    name="tel"
+                    type="text"
+                    value={form.tel}
                     aria-label="Email"
-                    value={form.countInStock}
                     required
                     onChange={handleChange}
                   />
                 </div>
-                <div class="-mx-1 mt-2 inline-block w-1/2 pl-1">
-                  <label class=" text-sm text-gray-600" for="cus_email">
-                    catégorie
-                  </label>
-                  <select
-                    id="vehicle_id"
-                    name="categorie"
-                    className="mt-1 block w-full rounded-md border border-gray-300 bg-gray-200  py-2 px-3 text-gray-600 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                    required
-                    onChange={handleChange}
-                  >
-                    <option value="Homme" data-val="Homme">
-                      Homme
-                    </option>
-                    <option value="Femme" data-val="Femme">
-                      Femme
-                    </option>
-                    <option value="Enfant" data-val="Enfant">
-                      Enfant
-                    </option>
-                  </select>
-                </div>
-
-                <div class="">
-                  <label class="block text-sm text-gray-600" for="cus_name">
-                    Statut
+                <div class="mt-2">
+                  <label class=" block text-sm text-gray-600" for="cus_email">
+                    adresse
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
-                    id="cus_name"
-                    name="statut"
+                    id="cus_email"
+                    name="adresse"
                     type="text"
-                    value={form.statut}
-                    aria-label="Name"
-                    required
-                    onChange={handleChange}
-                  />
-                </div>
-                <div class="">
-                  <label class="block text-sm text-gray-600" for="cus_name">
-                    Marque
-                  </label>
-                  <input
-                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
-                    id="cus_name"
-                    name="marque"
-                    type="text"
-                    value={form.marque}
-                    aria-label="Name"
+                    value={form.adresse}
+                    aria-label="Email"
                     required
                     onChange={handleChange}
                   />
@@ -224,10 +186,10 @@ const EditProduct = ({ product }) => {
     </div>
   )
 }
-EditProduct.getInitialProps = async ({ query: { id } }) => {
-  const res = await fetch(`http://localhost:3000/api/products/${id}`)
+EditFournisseur.getInitialProps = async ({ query: { id } }) => {
+  const res = await fetch(`http://localhost:3000/api/fournisseurs/${id}`)
   const { data } = await res.json()
 
-  return { product: data }
+  return { fournisseur: data }
 }
-export default EditProduct
+export default EditFournisseur

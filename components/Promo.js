@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import React from 'react'
+
 function Promo() {
   return (
     <div>
@@ -167,6 +169,7 @@ function Promo() {
                         Nom de produit
                       </h3>
                       <p class="mt-4  text-gray-100">Prix</p>
+                      {/* <Link href={`/${product._id}/DetailPage`}> */}
                       <span class="mt-4 flex w-full items-center justify-center rounded bg-yellow-400 py-1 hover:bg-yellow-500">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -186,6 +189,7 @@ function Promo() {
                           Ajouter au panier
                         </button>
                       </span>
+                      {/* </Link> */}
                     </div>
                   </div>
                 </div>
