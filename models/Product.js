@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
   description: { type: String, required: true },
   countInStock: { type: Number, required: true, default: 0 },
   categorie: { type: String, required: true },
-  // sousCategorie: { type: String, required: true },
+  sousCategorie: { type: String, required: true },
   statut: { type: String, required: true },
   marque: { type: String, required: true },
 })

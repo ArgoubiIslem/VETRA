@@ -3,63 +3,66 @@ import Link from 'next/link'
 import { DataContext } from '../store/GlobalState'
 import { postData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
-
+import { Store } from '../utils/Store'
+import Cookies from 'js-cookie'
+import { Badge } from '@material-ui/core'
 function Headers() {
+  const { state } = useContext(Store)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [showRecuperation, setShowRecuperation] = useState(false)
-  const initialState = {
-    nomP: '',
-    email: '',
-    password: '',
-    cf_password: '',
-  }
-  const [userData, setUserData] = useState(initialState)
-  const { nomP, email, password, cf_password } = userData
+  const { cart } = state
+  // const initialState = {
+  //   nomP: '',
+  //   email: '',
+  //   password: '',
+  //   cf_password: '',
+  // }
+  // const [userData, setUserData] = useState(initialState)
+  // const { nomP, email, password, cf_password } = userData
 
-  const { state, dispatch } = useContext(DataContext)
-  const { auth } = state
+  // const { auth } = state
 
-  const router = useRouter()
-  // validate function
-  function validateEmail(email) {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return re.test(email)
-  }
-  const valid = (nomP, email, password, cf_password) => {
-    if (!nomP || !email || !password) return 'Please add all fields.'
+  // const router = useRouter()
+  // // validate function
+  // function validateEmail(email) {
+  //   const re =
+  //     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  //   return re.test(email)
+  // }
+  // const valid = (nomP, email, password, cf_password) => {
+  //   if (!nomP || !email || !password) return 'Please add all fields.'
 
-    if (!validateEmail(email)) return 'Invalid emails.'
+  //   if (!validateEmail(email)) return 'Invalid emails.'
 
-    if (password.length < 6) return 'Password must be at least 6 characters.'
+  //   if (password.length < 6) return 'Password must be at least 6 characters.'
 
-    if (password !== cf_password) return 'Confirm password did not match.'
-  }
-  const handleChangeInput = (e) => {
-    const { nomP, value } = e.target
-    setUserData({ ...userData, [nomP]: value })
-    dispatch({ type: 'NOTIFY', payload: {} })
-  }
+  //   if (password !== cf_password) return 'Confirm password did not match.'
+  // }
+  // const handleChangeInput = (e) => {
+  //   const { nomP, value } = e.target
+  //   setUserData({ ...userData, [nomP]: value })
+  //   dispatch({ type: 'NOTIFY', payload: {} })
+  // }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    const errMsg = valid(nomP, email, password, cf_password)
-    if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+  //   const errMsg = valid(nomP, email, password, cf_password)
+  //   if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
 
-    dispatch({ type: 'NOTIFY', payload: { loading: true } })
+  //   dispatch({ type: 'NOTIFY', payload: { loading: true } })
 
-    const res = await postData('auth/register', userData)
+  //   const res = await postData('auth/register', userData)
 
-    if (res.err)
-      return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+  //   if (res.err)
+  //     return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
 
-    return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
-  }
+  //   return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+  // }
 
-  useEffect(() => {
-    if (Object.keys(auth).length !== 0) router.push('/')
-  }, [auth])
+  // useEffect(() => {
+  //   if (Object.keys(auth).length !== 0) router.push('/')
+  // }, [auth])
 
   return (
     <div className="">
@@ -286,24 +289,34 @@ function Headers() {
                 </svg>
               </a>
               <a className="flex items-center " href="#">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-                <span className="absolute -mt-5 ml-4 flex">
-                  <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-pink-400 opacity-75"></span>
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-pink-500"></span>
-                </span>
+                {cart.cartItems.length > 0 ? (
+                  <div>
+                    <Badge
+                      color="secondary"
+                      badgeContent={cart.cartItems.length}
+                    ></Badge>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span className="absolute -mt-5 ml-4 flex">
+                      <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-pink-400 opacity-75"></span>
+                      <span className="relative inline-flex h-3 w-3 rounded-full bg-pink-500"></span>
+                    </span>
+                  </div>
+                ) : (
+                  'Cart'
+                )}
               </a>
 
               {/* <Link

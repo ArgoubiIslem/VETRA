@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
-const EditCategorie = ({ categorie }) => {
-  console.log(categorie)
+const EditPromo = ({ promo }) => {
+  console.log(promo)
   const [form, setForm] = useState({
-    categorieLib: categorie?.categorieLib,
-    description: categorie?.description,
+    Product: promo?.Product,
+    dateDebut: promo?.dateDebut,
+    dateFin: promo?.dateFin,
+    remise: promo?.remise,
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -19,26 +21,23 @@ const EditCategorie = ({ categorie }) => {
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')
       if (Object.keys(errors).length === 0) {
-        updateCategorie()
+        updatePromo()
       } else {
         alert('please fill the required fields !')
       }
     }
   }, [isSubmitting])
-  const updateCategorie = async () => {
+  const updatePromo = async () => {
     setIsLoading(true)
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/categories/${categorie?.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(form),
-        }
-      )
+      const res = await fetch(`http://localhost:3000/api/promos/${promo?.id}`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      })
       setTimeout(() => {
         setIsLoading(false)
         alert('Modification avec success')
@@ -78,13 +77,13 @@ const EditCategorie = ({ categorie }) => {
               >
                 <div class="">
                   <label class="text-gray-00 block text-sm" for="cus_name">
-                    Categorie
+                    Promo
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-5 py-1 text-gray-700"
                     id="cus_name"
-                    name="nom"
-                    value={form.categorieLib}
+                    name="Product"
+                    value={form.Product}
                     type="text"
                     required=""
                     aria-label="Name"
@@ -93,14 +92,42 @@ const EditCategorie = ({ categorie }) => {
                 </div>
                 <div class="mt-2">
                   <label class=" block text-sm text-gray-600" for="cus_email">
-                    Description
+                    Date Debut
                   </label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
-                    name="description"
-                    type="text"
-                    value={form.description}
+                    name="dateDebut"
+                    type="date"
+                    value={form.dateDebut}
+                    required=""
+                    onChange={handleChange}
+                  />
+                </div>
+                <div class="mt-2">
+                  <label class=" block text-sm text-gray-600" for="cus_email">
+                    Date Fin
+                  </label>
+                  <input
+                    class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                    id="cus_email"
+                    name="dateFin"
+                    type="date"
+                    value={form.dateFin}
+                    required=""
+                    onChange={handleChange}
+                  />
+                </div>
+                <div class="mt-2">
+                  <label class=" block text-sm text-gray-600" for="cus_email">
+                    Remise
+                  </label>
+                  <input
+                    class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                    id="cus_email"
+                    name="remise"
+                    type="Number"
+                    value={form.remise}
                     required=""
                     onChange={handleChange}
                   />
@@ -122,10 +149,10 @@ const EditCategorie = ({ categorie }) => {
     </div>
   )
 }
-EditCategorie.getInitialProps = async ({ query: { id } }) => {
-  const res = await fetch(`http://localhost:3000/api/categories/${id}`)
+EditPromo.getInitialProps = async ({ query: { id } }) => {
+  const res = await fetch(`http://localhost:3000/api/promos/${id}`)
   const { data } = await res.json()
 
-  return { categorie: data }
+  return { promo: data }
 }
-export default EditCategorie
+export default EditPromo

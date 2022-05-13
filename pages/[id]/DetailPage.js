@@ -1,10 +1,11 @@
 import React from 'react'
-
+import axios from 'axios'
 import Headers from '../../components/Headers'
 import Footer from '../../components/Footer'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
 import { useState, useEffect } from 'react'
+import { Store } from '../../utils/Store'
 
 const DetailPage = ({ product }) => {
   const [form, setForm] = useState({
@@ -57,7 +58,18 @@ const DetailPage = ({ product }) => {
       [e.target.name]: e.target.value,
     })
   }
-
+  // Add To Cart Function
+  const addToCartHandler = async () => {
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id)
+    const quantity = existItem ? existItem.quantity + 1 : 1
+    const { data } = await axios.get(`/api/products/${product._id}`)
+    if (data.countInStock < quantity) {
+      window.alert('Sorry. Product is out of stock')
+      return
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
+    router.push('/cart')
+  }
   return (
     <div>
       <Headers />
@@ -229,7 +241,10 @@ const DetailPage = ({ product }) => {
                       {form.prix} DT
                     </span>
 
-                    <button className="ml-auto flex rounded border-0 bg-yellow-400 py-2 px-6 font-semibold  text-gray-800 hover:bg-yellow-400 focus:outline-none">
+                    <button
+                      className="ml-auto flex rounded border-0 bg-yellow-400 py-2 px-6 font-semibold  text-gray-800 hover:bg-yellow-400 focus:outline-none"
+                      onClick={addToCartHandler}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-6 w-6"

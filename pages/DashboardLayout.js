@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Categorie from '../components/Categorie'
+import Promos from '../components/Promos'
 import Evenement from '../components/Evenement'
 import Container from '../components/Container'
 import Dashboard from '../components/Dashboard'
@@ -16,7 +16,7 @@ function DashboardLayout() {
   const [showProduits, setShowProduits] = useState(false)
   const [showOrders, setShowOrders] = useState(false)
   const [showFournisseurs, setShowFournisseurs] = useState(false)
-  const [showCategorie, setShowCategorie] = useState(false)
+  const [showPromos, setShowPromos] = useState(false)
   const [showEvenement, setShowEvenement] = useState(false)
   return (
     <div className="font-roboto flex h-screen bg-gray-200">
@@ -25,7 +25,7 @@ function DashboardLayout() {
         prod={setShowProduits}
         order={setShowOrders}
         four={setShowFournisseurs}
-        cat={setShowCategorie}
+        pro={setShowPromos}
         event={setShowEvenement}
       />
 
@@ -40,7 +40,7 @@ function DashboardLayout() {
           {showProduits ? <Produits /> : null}
           {showOrders ? <Orders /> : null}
           {showFournisseurs ? <Fournisseurs /> : null}
-          {showCategorie ? <Categorie /> : null}
+          {showPromos ? <Promos /> : null}
           {showEvenement ? <Evenement /> : null}
 
           {/* <div className="container mx-auto px-6 py-8">

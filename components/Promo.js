@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-function Promo() {
+function promos() {
   return (
     <div>
       <div className="flex flex-col items-center justify-center ">
@@ -221,4 +221,4 @@ function Promo() {
   )
 }
 
-export default Promo
+export default promos

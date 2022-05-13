@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Dashboard from './Dashboard'
 import DashboardLayout from '../pages/DashboardLayout'
-function Sidebar({ dash, prod, order, four, cat, event }) {
+function Sidebar({ dash, prod, order, four, pro, event }) {
   // const [showDashboard, setShowDashboard] = useState(true)
   // const [showProduits, setShowProduits] = useState(false)
   // const [showOrders, setShowOrders] = useState(false)
@@ -49,7 +49,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 dash(true) ||
                 prod(false) ||
                 four(false) ||
-                cat(false) ||
+                pro(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -80,7 +80,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                   dash(true) ||
                   prod(false) ||
                   four(false) ||
-                  cat(false) ||
+                  pro(false) ||
                   event(false)
                 }
               >
@@ -94,7 +94,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 dash(false) ||
                 prod(true) ||
                 four(false) ||
-                cat(false) ||
+                pro(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -122,7 +122,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                   dash(false) ||
                   prod(true) ||
                   four(false) ||
-                  cat(false) ||
+                  pro(false) ||
                   event(false)
                 }
               >
@@ -137,7 +137,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 dash(false) ||
                 prod(false) ||
                 four(false) ||
-                cat(false) ||
+                pro(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -171,7 +171,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                   dash(false) ||
                   prod(false) ||
                   four(false) ||
-                  cat(false) ||
+                  pro(false) ||
                   event(false)
                 }
               >
@@ -184,7 +184,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 dash(false) ||
                 prod(false) ||
                 four(true) ||
-                cat(false) ||
+                pro(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -216,7 +216,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                   dash(false) ||
                   prod(false) ||
                   four(true) ||
-                  cat(false) ||
+                  pro(false) ||
                   event(false)
                 }
               >
@@ -229,7 +229,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 dash(false) ||
                 prod(false) ||
                 four(false) ||
-                cat(true) ||
+                pro(true) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -262,7 +262,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 </a>
               </Link> */}
               <a>
-                <span className="mx-4">Catégories</span>
+                <span className="mx-4">Promos</span>
               </a>
             </li>
             <li
@@ -271,7 +271,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                 dash(false) ||
                 prod(false) ||
                 four(false) ||
-                cat(false) ||
+                pro(false) ||
                 event(true)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -306,7 +306,7 @@ function Sidebar({ dash, prod, order, four, cat, event }) {
                   dash(false) ||
                   prod(false) ||
                   four(false) ||
-                  cat(false) ||
+                  pro(false) ||
                   event(true)
                 }
               >
