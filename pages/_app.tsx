@@ -1,10 +1,12 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { DataProvider } from '../store/GlobalState'
+import { StoreProvider } from '../utils/Store';
 function MyApp({ Component, pageProps }: AppProps) {
-  return(  <DataProvider>
+  return(  
+    <StoreProvider>
     <Component {...pageProps} />
-</DataProvider>)
+    </StoreProvider>
+);
  
 }
 

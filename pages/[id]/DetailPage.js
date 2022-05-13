@@ -4,7 +4,7 @@ import Headers from '../../components/Headers'
 import Footer from '../../components/Footer'
 import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch'
-import { useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Store } from '../../utils/Store'
 
 const DetailPage = ({ product }) => {
@@ -22,6 +22,7 @@ const DetailPage = ({ product }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const router = useRouter()
+  const { state, dispatch } = useContext(Store)
 
   const updateProduct = async () => {
     setIsLoading(true)
@@ -68,7 +69,7 @@ const DetailPage = ({ product }) => {
       return
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
-    router.push('/cart')
+    router.push('/Cart')
   }
   return (
     <div>
