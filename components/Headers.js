@@ -7,7 +7,7 @@ import { Store } from '../utils/Store'
 import Cookies from 'js-cookie'
 import { Badge } from '@material-ui/core'
 function Headers() {
-  const { state } = useContext(Store)
+  const { state, dispatch } = useContext(Store)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [showRecuperation, setShowRecuperation] = useState(false)
