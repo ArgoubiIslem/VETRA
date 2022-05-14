@@ -1,17 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { DataContext } from '../store/GlobalState'
+
 import { postData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
 import { Store } from '../utils/Store'
 import Cookies from 'js-cookie'
-import { Badge } from '@material-ui/core'
+import { Badge, Button } from '@material-ui/core'
+import { userInfo } from 'os'
 function Headers() {
+  const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
   const [showRecuperation, setShowRecuperation] = useState(false)
-  const { cart } = state
+  const { cart, userInfo } = state
   // const initialState = {
   //   nomP: '',
   //   email: '',
@@ -63,7 +65,22 @@ function Headers() {
   // useEffect(() => {
   //   if (Object.keys(auth).length !== 0) router.push('/')
   // }, [auth])
-
+  const [anchorEl, setAnchorEl] = useState(null)
+  const loginClickHandler = (e) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const loginMenuCloseHandler = () => {
+    setAnchorEl(null)
+  }
+  const logoutClickHandler = () => {
+    setAnchorEl(null)
+    dispatch({ type: 'USER_LOGOUT' })
+    Cookies.remove('userInfo')
+    Cookies.remove('cartItems')
+    Cookies.remove('shippinhAddress')
+    Cookies.remove('paymentMethod')
+    router.push('/')
+  }
   return (
     <div className="">
       {/* pour desktop */}
@@ -312,14 +329,26 @@ function Headers() {
                     <span className="absolute -mt-5 ml-4 flex"></span>
                   </div>
                 ) : (
-                  'Cart'
+                  <div>
+                    {' '}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span className="absolute -mt-5 ml-4 flex"></span>
+                  </div>
                 )}
               </a>
-
-              {/* <Link
-                href="/Login"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              > */}
 
               <a
                 onClick={() =>
@@ -329,21 +358,66 @@ function Headers() {
                 }
                 // className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
               >
-                {' '}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 "
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                {userInfo ? (
+                  <>
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={loginClickHandler}
+                      className={classes.navbarButton}
+                    >
+                      {userInfo.nomP}
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={loginMenuCloseHandler}
+                    >
+                      <MenuItem
+                        onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                      >
+                        Profile
+                      </MenuItem>
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/order-history')
+                        }
+                      >
+                        Order Hisotry
+                      </MenuItem>
+                      {userInfo.isAdmin && (
+                        <MenuItem
+                          onClick={(e) =>
+                            loginMenuCloseHandler(e, '/admin/dashboard')
+                          }
+                        >
+                          Admin Dashboard
+                        </MenuItem>
+                      )}
+                      <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <div>
+                    {' '}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 "
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                )}
               </a>
 
               {/* </Link> */}
