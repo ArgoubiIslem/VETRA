@@ -1,6 +1,33 @@
-import React from 'react'
 import Link from 'next/link'
+import React, { useContext, useState, useEffect } from 'react'
+import { Button } from '@material-ui/core'
+import { Store } from '../utils/Store'
+import Cookies from 'js-cookie'
+import { useRouter } from 'next/router'
+import { Badge, Menu, MenuItem } from '@material-ui/core'
 function Header() {
+  const { state, dispatch } = useContext(Store)
+  const { cart, userInfo } = state
+  const router = useRouter()
+  const [anchorEl, setAnchorEl] = useState(null)
+  const loginClickHandler = (e) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const loginMenuCloseHandler = (e, redirect) => {
+    setAnchorEl(null)
+    if (redirect) {
+      router.push(redirect)
+    }
+  }
+  const logoutClickHandler = () => {
+    setAnchorEl(null)
+    dispatch({ type: 'USER_LOGOUT' })
+    Cookies.remove('userInfo')
+    Cookies.remove('cartItems')
+    Cookies.remove('shippinhAddress')
+    Cookies.remove('paymentMethod')
+    router.push('/')
+  }
   return (
     <header className="flex items-center justify-between border-b-4 border-indigo-600 bg-white px-6 py-4">
       <div className="flex items-center">
@@ -63,31 +90,56 @@ function Header() {
         </button>
 
         <div className="group inline-block">
-          <button className="min-w-32 flex items-center rounded-sm border bg-white px-3 py-1 outline-none focus:outline-none">
-            <span className="flex-1 pr-1 font-semibold">
-              {' '}
-              <button className="relative z-10 block h-8 w-8 overflow-hidden rounded-full shadow focus:outline-none">
-                <img
-                  className="h-full w-full object-cover"
-                  src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=296&q=80"
-                  alt="Your avatar"
-                />
-              </button>
-            </span>
-          </button>
-          <ul className="min-w-32 absolute origin-top  scale-0 transform rounded-sm border bg-white transition duration-150 ease-in-out group-hover:scale-100">
-            <Link
-              href="/profile"
-              className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-            >
-              <a>
-                <li className="rounded-sm px-3 py-1 hover:bg-gray-100">
-                  Réglage
-                </li>
-              </a>
-            </Link>
-            <li className="rounded-sm px-3 py-1 hover:bg-gray-100">Profile</li>
-          </ul>
+          {userInfo ? (
+            <>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={loginClickHandler}
+                className="bg-gray-500"
+              >
+                {userInfo.nomP}
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={loginMenuCloseHandler}
+              >
+                {userInfo.isAdmin ? (
+                  <MenuItem
+                    onClick={(e) => loginMenuCloseHandler(e, '/profileAd')}
+                  >
+                    Profile
+                  </MenuItem>
+                ) : (
+                  <MenuItem
+                    onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                  >
+                    Profile
+                  </MenuItem>
+                )}
+                <MenuItem
+                  onClick={(e) => loginMenuCloseHandler(e, '/order-history')}
+                >
+                  Order Hisotry
+                </MenuItem>
+                {userInfo.isAdmin && (
+                  <MenuItem
+                    onClick={(e) =>
+                      loginMenuCloseHandler(e, '/admin/dashboard')
+                    }
+                  >
+                    Admin Dashboard
+                  </MenuItem>
+                )}
+                <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </header>

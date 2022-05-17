@@ -9,6 +9,7 @@ import ListHomme from './ListHomme'
 import ListEnfant from './ListEnfant'
 const NewProduct = () => {
   const [productsData, setProductsData] = useState(null)
+  // const [fournisseursData, setFournisseursData] = useState(null)
   const [showListFemme, setShowListFemme] = useState(false)
   const [showListHomme, setShowListHomme] = useState(false)
   const [showListEnfant, setShowListEnfant] = useState(false)
@@ -254,6 +255,32 @@ const NewProduct = () => {
                     class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
                   />
                 </div>
+
+                {/* <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
+                  <label className=" text-sm text-gray-600" for="cus_email">
+                    Fournisseur
+                  </label>
+
+                  <select
+                    onChange={handleChange}
+                    name="categorie"
+                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                  >
+                    <option placeholder="select"></option>
+                    {fournisseursData?.map(function (fournisseur, i) {
+                      console.log(fournisseursData)
+                      return (
+                        <option
+                          key={fournisseur._id}
+                          value={fournisseur.nom}
+                          data-val={fournisseur.nom}
+                        >
+                          {fournisseur.nom}
+                        </option>
+                      )
+                    })}
+                  </select>
+                </div> */}
 
                 <div class="group -mt-9 ml-2 inline-block h-9">
                   <div class="mx-auto max-w-md">

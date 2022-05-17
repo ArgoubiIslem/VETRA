@@ -8,6 +8,7 @@ import Orders from '../components/Orders'
 import Produits from '../components/Produits'
 import Sidebar from '../components/Sidebar'
 import Fournisseurs from '../components/Fournisseurs'
+import Users from '../components/Users'
 
 function DashboardLayout() {
   // console.log(dashboard)
@@ -18,6 +19,7 @@ function DashboardLayout() {
   const [showFournisseurs, setShowFournisseurs] = useState(false)
   const [showPromos, setShowPromos] = useState(false)
   const [showEvenement, setShowEvenement] = useState(false)
+  const [showUsers, setShowUsers] = useState(false)
   return (
     <div className="font-roboto flex h-screen bg-gray-200">
       <Sidebar
@@ -27,6 +29,7 @@ function DashboardLayout() {
         four={setShowFournisseurs}
         pro={setShowPromos}
         event={setShowEvenement}
+        user={setShowUsers}
       />
 
       <div className="flex flex-1 flex-col overflow-hidden">
@@ -42,6 +45,7 @@ function DashboardLayout() {
           {showFournisseurs ? <Fournisseurs /> : null}
           {showPromos ? <Promos /> : null}
           {showEvenement ? <Evenement /> : null}
+          {showUsers ? <Users /> : null}
 
           {/* <div className="container mx-auto px-6 py-8">
           

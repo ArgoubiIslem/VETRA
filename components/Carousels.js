@@ -17,6 +17,7 @@ function Carousels() {
       setCount(count - 1)
     }
   }
+
   return (
     <div>
       <div

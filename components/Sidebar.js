@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Dashboard from './Dashboard'
 import DashboardLayout from '../pages/DashboardLayout'
-function Sidebar({ dash, prod, order, four, pro, event }) {
+function Sidebar({ dash, prod, order, four, pro, event, user }) {
   // const [showDashboard, setShowDashboard] = useState(true)
   // const [showProduits, setShowProduits] = useState(false)
   // const [showOrders, setShowOrders] = useState(false)
@@ -50,6 +50,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                 prod(false) ||
                 four(false) ||
                 pro(false) ||
+                user(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -81,6 +82,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                   prod(false) ||
                   four(false) ||
                   pro(false) ||
+                  user(false) ||
                   event(false)
                 }
               >
@@ -95,6 +97,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                 prod(true) ||
                 four(false) ||
                 pro(false) ||
+                user(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -123,6 +126,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                   prod(true) ||
                   four(false) ||
                   pro(false) ||
+                  user(false) ||
                   event(false)
                 }
               >
@@ -138,6 +142,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                 prod(false) ||
                 four(false) ||
                 pro(false) ||
+                user(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -172,6 +177,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                   prod(false) ||
                   four(false) ||
                   pro(false) ||
+                  user(false) ||
                   event(false)
                 }
               >
@@ -185,6 +191,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                 prod(false) ||
                 four(true) ||
                 pro(false) ||
+                user(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -216,7 +223,8 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                   dash(false) ||
                   prod(false) ||
                   four(true) ||
-                  pro(false) ||
+                  pro(true) ||
+                  user(false) ||
                   event(false)
                 }
               >
@@ -230,6 +238,7 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                 prod(false) ||
                 four(false) ||
                 pro(true) ||
+                user(false) ||
                 event(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
@@ -272,7 +281,8 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                 prod(false) ||
                 four(false) ||
                 pro(false) ||
-                event(true)
+                event(true) ||
+                user(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -307,39 +317,58 @@ function Sidebar({ dash, prod, order, four, pro, event }) {
                   prod(false) ||
                   four(false) ||
                   pro(false) ||
-                  event(true)
+                  event(true) ||
+                  user(false)
                 }
               >
                 <span className="mx-4">Evenement</span>
               </a>
               {/* </Link> */}
             </li>
-            <li class="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800">
+            <li
+              onClick={() =>
+                order(false) ||
+                dash(false) ||
+                prod(false) ||
+                four(false) ||
+                pro(false) ||
+                event(false) ||
+                user(true)
+              }
+              className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
+            >
               <svg
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                width="24"
-                height="24"
-                strokeWidth="2"
-                stroke="currentColor"
+                class="h-6 w-6 text-white"
                 fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                {' '}
-                <path stroke="none" d="M0 0h24v24H0z" />{' '}
-                <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />{' '}
-                <path d="M7 12h14l-3 -3m0 6l3 -3" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
               </svg>
-              <Link
-                href="/"
+
+              {/* <Link
+                href="/DashboardLayout"
                 className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
+              > */}
+              <a
+                onClick={() =>
+                  order(false) ||
+                  dash(false) ||
+                  prod(false) ||
+                  four(false) ||
+                  pro(false) ||
+                  event(false) ||
+                  user(true)
+                }
               >
-                <a>
-                  {' '}
-                  <span className="mx-4">Se deconnect</span>
-                </a>
-              </Link>
+                <span className="mx-4">Utilisateurs</span>
+              </a>
+              {/* </Link> */}
             </li>
           </ul>
         </nav>

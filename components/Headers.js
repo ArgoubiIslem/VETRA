@@ -3,12 +3,26 @@ import Link from 'next/link'
 import useStyles from '../utils/styles'
 import { postData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
-import { Store } from '../utils/Store'
+
 import Cookies from 'js-cookie'
+import { Badge, Menu, MenuItem } from '@material-ui/core'
+
+import {
+  List,
+  ListItem,
+  Typography,
+  TextField,
+  Button,
+} from '@material-ui/core'
+import axios from 'axios'
+
 import NextLink from 'next/link'
 
-import { userInfo } from 'os'
-import { Badge, Button, Menu, MenuItem } from '@material-ui/core'
+import { Store } from '../utils/Store'
+
+import { Controller, useForm } from 'react-hook-form'
+import { useSnackbar } from 'notistack'
+import { getError } from '../utils/error'
 function Headers() {
   const classes = useStyles()
   const router = useRouter()
@@ -17,57 +31,30 @@ function Headers() {
   const [showRegister, setShowRegister] = useState(false)
   const [showRecuperation, setShowRecuperation] = useState(false)
   const { cart, userInfo } = state
-  // const initialState = {
-  //   nomP: '',
-  //   email: '',
-  //   password: '',
-  //   cf_password: '',
-  // }
-  // const [userData, setUserData] = useState(initialState)
-  // const { nomP, email, password, cf_password } = userData
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm()
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
-  // const { auth } = state
+  const { redirect } = router.query // login?redirect=/shipping
 
-  // const router = useRouter()
-  // // validate function
-  // function validateEmail(email) {
-  //   const re =
-  //     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  //   return re.test(email)
-  // }
-  // const valid = (nomP, email, password, cf_password) => {
-  //   if (!nomP || !email || !password) return 'Please add all fields.'
+  const submitHandler = async ({ email, password }) => {
+    closeSnackbar()
+    try {
+      const { data } = await axios.post('/api/users/login', {
+        email,
+        password,
+      })
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      Cookies.set('userInfo', data)
+      router.push(redirect || '/')
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' })
+    }
+  }
 
-  //   if (!validateEmail(email)) return 'Invalid emails.'
-
-  //   if (password.length < 6) return 'Password must be at least 6 characters.'
-
-  //   if (password !== cf_password) return 'Confirm password did not match.'
-  // }
-  // const handleChangeInput = (e) => {
-  //   const { nomP, value } = e.target
-  //   setUserData({ ...userData, [nomP]: value })
-  //   dispatch({ type: 'NOTIFY', payload: {} })
-  // }
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   const errMsg = valid(nomP, email, password, cf_password)
-  //   if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
-
-  //   dispatch({ type: 'NOTIFY', payload: { loading: true } })
-
-  //   const res = await postData('auth/register', userData)
-
-  //   if (res.err)
-  //     return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-
-  //   return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
-  // }
-
-  // useEffect(() => {
-  //   if (Object.keys(auth).length !== 0) router.push('/')
-  // }, [auth])
   const [anchorEl, setAnchorEl] = useState(null)
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget)
@@ -382,28 +369,41 @@ function Headers() {
                       open={Boolean(anchorEl)}
                       onClose={loginMenuCloseHandler}
                     >
-                      <MenuItem
-                        onClick={(e) => loginMenuCloseHandler(e, '/profile')}
-                      >
-                        Profile
-                      </MenuItem>
+                      {userInfo.isAdmin ? (
+                        <MenuItem
+                          onClick={(e) =>
+                            loginMenuCloseHandler(e, '/profileAd')
+                          }
+                        >
+                          Profile
+                        </MenuItem>
+                      ) : (
+                        <MenuItem
+                          onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                        >
+                          Profile
+                        </MenuItem>
+                      )}
                       <MenuItem
                         onClick={(e) =>
                           loginMenuCloseHandler(e, '/order-history')
                         }
                       >
-                        Order Hisotry
+                        Historique des commandes
                       </MenuItem>
+
                       {userInfo.isAdmin && (
                         <MenuItem
                           onClick={(e) =>
-                            loginMenuCloseHandler(e, '/admin/dashboard')
+                            loginMenuCloseHandler(e, '/DashboardLayout')
                           }
                         >
-                          Admin Dashboard
+                          Tableau de booard
                         </MenuItem>
                       )}
-                      <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                      <MenuItem onClick={logoutClickHandler}>
+                        Déconnexion
+                      </MenuItem>
                     </Menu>
                   </>
                 ) : (
@@ -485,137 +485,154 @@ function Headers() {
           <h6 className="mb-1 block font-extrabold">
             CONNECTEZ-VOUS A VOTRE COMPTE
           </h6>
-          <form>
-            <div className="mb-4">
-              <label className="mb-1 block" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block" for="password">
-                Mot de passe
-              </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-            <div className="mt-6">
-              <Link href="/DashboardLayout">
-                <a className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 font-semibold capitalize text-white transition hover:bg-blue-700 focus:border-blue-700 focus:outline-none focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25">
-                  Connexion
+          <div title="Login">
+            <form
+              onSubmit={handleSubmit(submitHandler)}
+              className={classes.form}
+            >
+              <List>
+                <ListItem>
+                  <Controller
+                    name="email"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        inputProps={{ type: 'email' }}
+                        error={Boolean(errors.email)}
+                        helperText={
+                          errors.email
+                            ? errors.email.type === 'pattern'
+                              ? "L'email n'est pas valide"
+                              : 'Email est obligatoire'
+                            : ''
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="password"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="password"
+                        label="Mot de passe"
+                        inputProps={{ type: 'password' }}
+                        error={Boolean(errors.password)}
+                        helperText={
+                          errors.password
+                            ? errors.password.type === 'minLength'
+                              ? 'La longueur du mot de passe est supérieure à 5'
+                              : 'Mot de passe est obligatoire'
+                            : ''
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    fullWidth
+                    color="primary"
+                  >
+                    Login
+                  </Button>
+                </ListItem>
+                <a
+                  onClick={() =>
+                    !showRegister
+                      ? setShowRegister(true) || setShowLogin(false)
+                      : setShowRegister(false) || setShowLogin(false)
+                  }
+                  className="cursor-pointer underline "
+                >
+                  Créer un compte
                 </a>
-              </Link>
-            </div>
-            <div className=" mt-6 text-center">
-              {/* <Link href="/Recuperation"> */}
-              <a
-                className="underline"
-                onClick={() =>
-                  !showRecuperation
-                    ? setShowRecuperation(true) ||
-                      setShowLogin(false) ||
-                      setShowRegister(false)
-                    : setShowLogin(false) ||
-                      setShowRegister(false) ||
-                      setShowRecuperation(false)
-                }
-              >
-                Mot de passe oublié?{' '}
-              </a>
-              {/* </Link> */}
-            </div>
-            <div className="mt-6 text-center">
-              {/* <Link href="/Register"> */}
-              <a
-                onClick={() =>
-                  !showRegister
-                    ? setShowRegister(true) || setShowLogin(false)
-                    : setShowRegister(false) || setShowLogin(false)
-                }
-                className="cursor-pointer underline "
-              >
-                Créer un compte
-              </a>
-              {/* </Link> */}
-            </div>
-          </form>
+              </List>
+            </form>
+          </div>
         </div>
       ) : null}
       {showRegister ? (
         <div className="absolute right-8  top-16 z-50 mx-auto  max-h-full w-full  overflow-y-hidden rounded-md bg-gray-100 p-5 sm:max-w-md">
-          <h6 className="mb-1 block font-extrabold">
-            CONNECTEZ-VOUS A VOTRE COMPTE
-          </h6>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="mb-1 block">Nom et prénom</label>
-              <input
-                id="nomP"
-                type="text"
-                onChange={handleChangeInput}
-                name="nomP"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="mb-1 block" htmlFor="email">
-                Email
-              </label>
-              <input
-                name="email"
-                onChange={handleChangeInput}
-                id="exampleInputEmail1"
-                type="text"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-              <small id="emailHelp" className="form-text text-muted">
-                Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.
-              </small>
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block" htmlFor="password">
-                Mot de passe
-              </label>
-              <input
-                id="exampleInputPassword1"
-                onChange={handleChangeInput}
-                type="password"
-                name="password"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block" htmlFor="password">
-                Confirmer mot de passe
-              </label>
-              <input
-                name="cf_password"
-                onChange={handleChangeInput}
-                id="exampleInputPassword2"
-                type="password"
-                className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-              />
-            </div>
-
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 font-semibold capitalize text-white transition hover:bg-blue-700 focus:border-blue-700 focus:outline-none focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25"
-              >
-                Enregistrer
-              </button>
-            </div>
-          </form>
+          <h6 className="mb-1 block font-extrabold">S'inscrire</h6>
+          <div title="Register">
+            <form onSubmit={submitHandler} className={classes.form}>
+              <List>
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="nomP"
+                    label="Nom Prenom"
+                    inputProps={{ type: 'text' }}
+                    onChange={(e) => setNomP(e.target.value)}
+                  ></TextField>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    inputProps={{ type: 'email' }}
+                    onChange={(e) => setEmail(e.target.value)}
+                  ></TextField>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="password"
+                    label="Mot de passe"
+                    inputProps={{ type: 'password' }}
+                    onChange={(e) => setPassword(e.target.value)}
+                  ></TextField>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    id="confirmPassword"
+                    label="Confirmer Mot de passe"
+                    inputProps={{ type: 'password' }}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  ></TextField>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    fullWidth
+                    color="primary"
+                  >
+                    S'inscrire
+                  </Button>
+                </ListItem>
+              </List>
+            </form>
+          </div>
 
           <div className="mt-6 text-center">
             Vous avez déjà un compte?
@@ -634,7 +651,7 @@ function Headers() {
           </div>
         </div>
       ) : null}
-      {showRecuperation ? (
+      {/* {showRecuperation ? (
         <div className="fixed  right-8 top-16 z-50 mx-auto  max-h-full w-full rounded-md bg-gray-100 p-5 sm:max-w-md">
           <div className="mx-auto w-full p-5 sm:max-w-md">
             <h6 className="mb-1 block font-extrabold">
@@ -667,7 +684,7 @@ function Headers() {
             </form>
           </div>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   )
 }
