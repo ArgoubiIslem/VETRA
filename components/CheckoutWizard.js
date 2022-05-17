@@ -10,7 +10,7 @@ export default function CheckoutWizard({ activeStep = 0 }) {
       activeStep={activeStep}
       alternativeLabel
     >
-      {['Login', 'Shipping Address', 'Payment Method', 'Place Order'].map(
+      {['Login', 'Adresse de livraison', 'Mode de paiement', 'Passer la commande'].map(
         (step) => (
           <Step key={step}>
             <StepLabel>{step}</StepLabel>

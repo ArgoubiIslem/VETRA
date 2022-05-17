@@ -1,13 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Link from 'next/link'
-
+import useStyles from '../utils/styles'
 import { postData } from '../utils/fetchData'
 import { useRouter } from 'next/router'
 import { Store } from '../utils/Store'
 import Cookies from 'js-cookie'
-import { Badge, Button } from '@material-ui/core'
+import NextLink from 'next/link'
+
 import { userInfo } from 'os'
+import { Badge, Button, Menu, MenuItem } from '@material-ui/core'
 function Headers() {
+  const classes = useStyles()
   const router = useRouter()
   const { state, dispatch } = useContext(Store)
   const [showLogin, setShowLogin] = useState(false)
@@ -69,8 +72,11 @@ function Headers() {
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget)
   }
-  const loginMenuCloseHandler = () => {
+  const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null)
+    if (redirect) {
+      router.push(redirect)
+    }
   }
   const logoutClickHandler = () => {
     setAnchorEl(null)
@@ -305,13 +311,14 @@ function Headers() {
                   />
                 </svg>
               </a>
-              <a className="flex items-center " href="#">
+              <a className="flex items-center " href="/Cart">
                 {cart.cartItems.length > 0 ? (
                   <div>
                     <Badge
                       color="secondary"
                       badgeContent={cart.cartItems.length}
                     ></Badge>
+
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -364,7 +371,7 @@ function Headers() {
                       aria-controls="simple-menu"
                       aria-haspopup="true"
                       onClick={loginClickHandler}
-                      className={classes.navbarButton}
+                      className="bg-gray-500"
                     >
                       {userInfo.nomP}
                     </Button>
@@ -401,7 +408,6 @@ function Headers() {
                   </>
                 ) : (
                   <div>
-                    {' '}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 "

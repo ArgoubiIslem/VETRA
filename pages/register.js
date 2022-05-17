@@ -32,7 +32,7 @@ export default function Register() {
   const submitHandler = async (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      alert("password don't match")
+      alert('le mot de passe ne correspond pas')
     }
     try {
       const { data } = await axios.post('/api/users/register', {
@@ -43,7 +43,7 @@ export default function Register() {
       dispatch({ type: 'USER_LOGIN', payload: data })
       Cookies.set('userInfo', data)
       router.push(redirect || '/')
-      alert('Success login')
+      alert('Connexion réussie')
     } catch (err) {
       alert(err.message)
     }
@@ -52,7 +52,7 @@ export default function Register() {
     <div title="Register">
       <form onSubmit={submitHandler} className={classes.form}>
         <Typography component="h1" variant="1">
-          Register
+          S'inscrire
           <List>
             <ListItem>
               <TextField
@@ -101,13 +101,13 @@ export default function Register() {
                 fullWidth
                 color="primary"
               >
-                Login
+                S'inscrire
               </Button>
             </ListItem>
             <ListItem>
               Déjà un compte?{' '}
               <NextLink href={`/login?redirect=${redirect || '/'}`} passHref>
-                <Link>Login</Link>
+                <Link>Connexion</Link>
               </NextLink>
             </ListItem>
           </List>

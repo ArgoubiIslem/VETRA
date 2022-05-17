@@ -80,9 +80,9 @@ export default function Shipping() {
   return (
     <div title="Shipping Address">
       <CheckoutWizard activeStep={1} />
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
-        <Typography component="h1" variant="h1">
-          Shipping Address
+      <form onSubmit={handleSubmit(submitHandler)}>
+        <Typography component="h1" variant="h6">
+          Adresse de livraison
         </Typography>
         <List>
           <ListItem>
@@ -99,13 +99,13 @@ export default function Shipping() {
                   variant="outlined"
                   fullWidth
                   id="fullName"
-                  label="Full Name"
+                  label="Nom complet"
                   error={Boolean(errors.fullName)}
                   helperText={
                     errors.fullName
                       ? errors.fullName.type === 'minLength'
-                        ? 'Full Name length is more than 1'
-                        : 'Full Name is required'
+                        ? 'La longueur du nom complet est supérieure à 1'
+                        : 'Nom complet est obligatoire'
                       : ''
                   }
                   {...field}
@@ -127,13 +127,13 @@ export default function Shipping() {
                   variant="outlined"
                   fullWidth
                   id="address"
-                  label="Address"
+                  label="Addresse"
                   error={Boolean(errors.address)}
                   helperText={
                     errors.address
                       ? errors.address.type === 'minLength'
-                        ? 'Address length is more than 1'
-                        : 'Address is required'
+                        ? "La longueur de l'adresse est supérieure à 1"
+                        : 'Addresse est obligatoire'
                       : ''
                   }
                   {...field}
@@ -155,13 +155,13 @@ export default function Shipping() {
                   variant="outlined"
                   fullWidth
                   id="city"
-                  label="City"
+                  label="la ville"
                   error={Boolean(errors.city)}
                   helperText={
                     errors.city
                       ? errors.city.type === 'minLength'
-                        ? 'City length is more than 1'
-                        : 'City is required'
+                        ? 'La longueur de la ville est supérieure à 1'
+                        : 'la ville est obligatoire'
                       : ''
                   }
                   {...field}
@@ -183,13 +183,13 @@ export default function Shipping() {
                   variant="outlined"
                   fullWidth
                   id="postalCode"
-                  label="Postal Code"
+                  label="code postal"
                   error={Boolean(errors.postalCode)}
                   helperText={
                     errors.postalCode
                       ? errors.postalCode.type === 'minLength'
-                        ? 'Postal Code length is more than 1'
-                        : 'Postal Code is required'
+                        ? ' La longueur du code postal est supérieure à 1'
+                        : 'Le code postal est obligatoire'
                       : ''
                   }
                   {...field}
@@ -211,13 +211,13 @@ export default function Shipping() {
                   variant="outlined"
                   fullWidth
                   id="country"
-                  label="Country"
+                  label="Pays"
                   error={Boolean(errors.country)}
                   helperText={
                     errors.country
                       ? errors.country.type === 'minLength'
-                        ? 'Country length is more than 1'
-                        : 'Country is required'
+                        ? 'La longueur du pays est supérieure à 1'
+                        : 'Le pays est obligatoire'
                       : ''
                   }
                   {...field}
@@ -231,7 +231,7 @@ export default function Shipping() {
               type="button"
               onClick={chooseLocationHandler}
             >
-              Choose on map
+              Choisissez sur map
             </Button>
             <Typography>
               {location.lat && `${location.lat}, ${location.lat}`}
@@ -239,7 +239,7 @@ export default function Shipping() {
           </ListItem>
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
-              Continue
+              Continuez
             </Button>
           </ListItem>
         </List>

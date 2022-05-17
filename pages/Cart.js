@@ -39,7 +39,7 @@ function Cart() {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item })
   }
   const checkoutHandler = () => {
-    router.push('/shipping')
+    router.push('/login')
   }
   return (
     <div>
