@@ -20,6 +20,7 @@ import { getError } from '../utils/error'
 function Headers() {
   const classes = useStyles()
   const router = useRouter()
+  const [productsData, setProductsData] = useState(null)
   const { state, dispatch } = useContext(Store)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
@@ -74,8 +75,6 @@ function Headers() {
     router.push('/')
   }
 
-  // REGISTER
-
   const submitHandler2 = async (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
@@ -94,6 +93,39 @@ function Headers() {
     } catch (err) {
       alert(err.message)
     }
+  }
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await fetch('http://localhost:3000/api/products')
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`)
+        }
+
+        const result = await response.json()
+        console.log(result['data'])
+        setProductsData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+
+  // Filter
+
+  const filterResult = (catItem) => {
+    const result = productsData?.filter((curData) => {
+      return curData.sousCategorie === catItem
+    })
+    setProductsData(result)
   }
 
   return (
@@ -130,49 +162,21 @@ function Headers() {
                     <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
                       <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">DJEBBA</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">QOFTANNE</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">FOUTA & BLOUSA</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">PULLE FATHILHA</p>
-                            </div>
-                          </a>
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">SAFSARI</p>
-                            </div>
-                          </a>
+                          {productsData?.map(function (product, i) {
+                            console.log(productsData)
+                            return (
+                              <a
+                                class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                                href="/Prod"
+                              >
+                                <div class="ml-3">
+                                  <p class="font-semibold">
+                                    {product.sousCategorie}
+                                  </p>
+                                </div>
+                              </a>
+                            )
+                          })}
                         </div>
                       </div>
                     </div>
@@ -200,32 +204,21 @@ function Headers() {
                     <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
                       <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">DJEBBA</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">BURNOUSE</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">DENGRI</p>
-                            </div>
-                          </a>
+                          {productsData?.map(function (product, i) {
+                            console.log(productsData)
+                            return (
+                              <a
+                                class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                                href="#"
+                              >
+                                <div class="ml-3">
+                                  <p class="font-semibold">
+                                    {product.sousCategorie}
+                                  </p>
+                                </div>
+                              </a>
+                            )
+                          })}
                         </div>
                       </div>
                     </div>
@@ -253,32 +246,21 @@ function Headers() {
                     <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
                       <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">DJEBBA FILLE</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">DJEBBA GARÇONS</p>
-                            </div>
-                          </a>
-
-                          <a
-                            class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                            href="#"
-                          >
-                            <div class="ml-3">
-                              <p class="font-semibold">FOUTA & BLOUSA</p>
-                            </div>
-                          </a>
+                          {productsData?.map(function (product, i) {
+                            console.log(productsData)
+                            return (
+                              <a
+                                class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                                href="#"
+                              >
+                                <div class="ml-3">
+                                  <p class="font-semibold">
+                                    {product.sousCategorie}
+                                  </p>
+                                </div>
+                              </a>
+                            )
+                          })}
                         </div>
                       </div>
                     </div>
@@ -304,24 +286,21 @@ function Headers() {
 
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             <div className="hidden items-center space-x-5 xl:flex">
-              <a className="flex items-center " href="/adore">
-                <div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                  <span className="absolute -mt-5 ml-4 flex"></span>
-                </div>
+              <a className="" href="#">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
               </a>
               <a className="flex items-center " href="/Cart">
                 {cart.cartItems.length > 0 ? (

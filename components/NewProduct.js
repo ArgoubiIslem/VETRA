@@ -9,7 +9,7 @@ import ListHomme from './ListHomme'
 import ListEnfant from './ListEnfant'
 const NewProduct = () => {
   const [productsData, setProductsData] = useState(null)
-  // const [fournisseursData, setFournisseursData] = useState(null)
+  const [fournisseursData, setFournisseursData] = useState(null)
   const [showListFemme, setShowListFemme] = useState(false)
   const [showListHomme, setShowListHomme] = useState(false)
   const [showListEnfant, setShowListEnfant] = useState(false)
@@ -82,6 +82,31 @@ const NewProduct = () => {
         const result = await response.json()
         console.log(result['data'])
         setProductsData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await fetch('http://localhost:3000/api/fournisseurs')
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`)
+        }
+
+        const result = await response.json()
+        console.log(result['data'])
+        setFournisseursData(result['data'])
         return result
       } catch (err) {
         console.log(err)
@@ -190,40 +215,6 @@ const NewProduct = () => {
                 </div>
                 <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
                   <label className=" text-sm text-gray-600" for="cus_email">
-                    Sous Categorie
-                  </label>
-
-                  <select
-                    onChange={handleChange}
-                    name="sousCategorie"
-                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
-                  >
-                    <option placeholder="select"></option>
-                    {productsData?.map(function (product, i) {
-                      console.log(productsData)
-                      return (
-                        <option
-                          key={product._id}
-                          value={product.sousCategorie}
-                          data-val={product.sousCategorie}
-                        >
-                          {product.sousCategorie}
-                        </option>
-                      )
-                    })}
-                  </select>
-
-                  <input
-                    list="browsers"
-                    name="sousCategorie"
-                    onChange={handleChange}
-                    placeholder="Autre catégorie"
-                    class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
-                  />
-                </div>
-
-                <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
-                  <label className=" text-sm text-gray-600" for="cus_email">
                     Categorie
                   </label>
 
@@ -250,6 +241,39 @@ const NewProduct = () => {
                   <input
                     list="browsers"
                     name="categorie"
+                    onChange={handleChange}
+                    placeholder="Autre catégorie"
+                    class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
+                  />
+                </div>
+                <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
+                  <label className=" text-sm text-gray-600" for="cus_email">
+                    Sous Categorie
+                  </label>
+
+                  <select
+                    onChange={handleChange}
+                    name="sousCategorie"
+                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                  >
+                    <option placeholder="select"></option>
+                    {productsData?.map(function (product, i) {
+                      console.log(productsData)
+                      return (
+                        <option
+                          key={product._id}
+                          value={product.sousCategorie}
+                          data-val={product.sousCategorie}
+                        >
+                          {product.sousCategorie}
+                        </option>
+                      )
+                    })}
+                  </select>
+
+                  <input
+                    list="browsers"
+                    name="sousCategorie"
                     onChange={handleChange}
                     placeholder="Autre catégorie"
                     class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
@@ -305,17 +329,72 @@ const NewProduct = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div class="">
-                  <label class="block text-sm text-gray-600" for="cus_name">
+
+                <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
+                  <label className=" text-sm text-gray-600" for="cus_email">
                     Marque
                   </label>
-                  <input
-                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
-                    name="marque"
-                    type="text"
-                    placeholder="marque"
-                    required
+
+                  <select
                     onChange={handleChange}
+                    name="marque"
+                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                  >
+                    <option placeholder="select"></option>
+                    {productsData?.map(function (product, i) {
+                      console.log(productsData)
+                      return (
+                        <option
+                          key={product._id}
+                          value={product.marque}
+                          data-val={product.marque}
+                        >
+                          {product.marque}
+                        </option>
+                      )
+                    })}
+                  </select>
+
+                  <input
+                    list="browsers"
+                    name="marque"
+                    onChange={handleChange}
+                    placeholder="Autre catégorie"
+                    class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
+                  />
+                </div>
+
+                <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
+                  <label className=" text-sm text-gray-600" for="cus_email">
+                    Fournisseur
+                  </label>
+
+                  <select
+                    onChange={handleChange}
+                    name="fournisseur"
+                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                  >
+                    <option placeholder="select"></option>
+                    {fournisseursData?.map(function (fournisseur, i) {
+                      console.log(fournisseursData)
+                      return (
+                        <option
+                          key={fournisseur._id}
+                          value={fournisseur.nom}
+                          data-val={fournisseur.nom}
+                        >
+                          {fournisseur.nom}
+                        </option>
+                      )
+                    })}
+                  </select>
+
+                  <input
+                    list="browsers"
+                    name="fournisseur"
+                    onChange={handleChange}
+                    placeholder="Autre catégorie"
+                    class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
                   />
                 </div>
                 <div className="mt-4">
