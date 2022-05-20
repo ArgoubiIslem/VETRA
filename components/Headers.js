@@ -7,13 +7,7 @@ import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import { Badge, Menu, MenuItem } from '@material-ui/core'
 
-import {
-  List,
-  ListItem,
-  Typography,
-  TextField,
-  Button,
-} from '@material-ui/core'
+import { List, ListItem, TextField, Button } from '@material-ui/core'
 import axios from 'axios'
 
 import NextLink from 'next/link'
@@ -37,6 +31,10 @@ function Headers() {
     formState: { errors },
   } = useForm()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const [nomP, setNomP] = useState()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [confirmPassword, setConfirmPassword] = useState()
 
   const { redirect } = router.query // login?redirect=/shipping
 
@@ -50,6 +48,7 @@ function Headers() {
       dispatch({ type: 'USER_LOGIN', payload: data })
       Cookies.set('userInfo', data)
       router.push(redirect || '/')
+      setShowLogin(false)
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' })
     }
@@ -74,6 +73,29 @@ function Headers() {
     Cookies.remove('paymentMethod')
     router.push('/')
   }
+
+  // REGISTER
+
+  const submitHandler2 = async (e) => {
+    e.preventDefault()
+    if (password !== confirmPassword) {
+      alert('le mot de passe ne correspond pas')
+    }
+    try {
+      const { data } = await axios.post('/api/users/register', {
+        nomP,
+        email,
+        password,
+      })
+      dispatch({ type: 'USER_LOGIN', payload: data })
+      Cookies.set('userInfo', data)
+      router.push(redirect || '/')
+      alert('Connexion réussie')
+    } catch (err) {
+      alert(err.message)
+    }
+  }
+
   return (
     <div className="">
       {/* pour desktop */}
@@ -282,21 +304,24 @@ function Headers() {
 
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             <div className="hidden items-center space-x-5 xl:flex">
-              <a className="" href="#">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
+              <a className="flex items-center " href="/adore">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg>
+                  <span className="absolute -mt-5 ml-4 flex"></span>
+                </div>
               </a>
               <a className="flex items-center " href="/Cart">
                 {cart.cartItems.length > 0 ? (
@@ -344,69 +369,15 @@ function Headers() {
                 )}
               </a>
 
-              <a
-                onClick={() =>
-                  !showLogin
-                    ? setShowLogin(true) || setShowRegister(false)
-                    : setShowLogin(false) || setShowRegister(false)
-                }
-                // className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              >
-                {userInfo ? (
-                  <>
-                    <Button
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={loginClickHandler}
-                      className="bg-gray-500"
-                    >
-                      {userInfo.nomP}
-                    </Button>
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={loginMenuCloseHandler}
-                    >
-                      {userInfo.isAdmin ? (
-                        <MenuItem
-                          onClick={(e) =>
-                            loginMenuCloseHandler(e, '/profileAd')
-                          }
-                        >
-                          Profile
-                        </MenuItem>
-                      ) : (
-                        <MenuItem
-                          onClick={(e) => loginMenuCloseHandler(e, '/profile')}
-                        >
-                          Profile
-                        </MenuItem>
-                      )}
-                      <MenuItem
-                        onClick={(e) =>
-                          loginMenuCloseHandler(e, '/order-history')
-                        }
-                      >
-                        Historique des commandes
-                      </MenuItem>
-
-                      {userInfo.isAdmin && (
-                        <MenuItem
-                          onClick={(e) =>
-                            loginMenuCloseHandler(e, '/DashboardLayout')
-                          }
-                        >
-                          Tableau de booard
-                        </MenuItem>
-                      )}
-                      <MenuItem onClick={logoutClickHandler}>
-                        Déconnexion
-                      </MenuItem>
-                    </Menu>
-                  </>
-                ) : (
+              {!userInfo ? (
+                <a
+                  onClick={() =>
+                    !showLogin
+                      ? setShowLogin(true) || setShowRegister(false)
+                      : setShowLogin(false) || setShowRegister(false)
+                  }
+                  // className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
+                >
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -423,8 +394,60 @@ function Headers() {
                       />
                     </svg>
                   </div>
-                )}
-              </a>
+                </a>
+              ) : (
+                <>
+                  <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={loginClickHandler}
+                    className="bg-gray-500"
+                  >
+                    {userInfo.nomP}
+                  </Button>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={loginMenuCloseHandler}
+                  >
+                    {userInfo.isAdmin ? (
+                      <MenuItem
+                        onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                      >
+                        Profile
+                      </MenuItem>
+                    ) : (
+                      <MenuItem
+                        onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                      >
+                        Profile
+                      </MenuItem>
+                    )}
+                    <MenuItem
+                      onClick={(e) =>
+                        loginMenuCloseHandler(e, '/order-history')
+                      }
+                    >
+                      Historique des commandes
+                    </MenuItem>
+
+                    {userInfo.isAdmin && (
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/DashboardLayout')
+                        }
+                      >
+                        Tableau de booard
+                      </MenuItem>
+                    )}
+                    <MenuItem onClick={logoutClickHandler}>
+                      Déconnexion
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
 
               {/* </Link> */}
 
@@ -578,7 +601,7 @@ function Headers() {
         <div className="absolute right-8  top-16 z-50 mx-auto  max-h-full w-full  overflow-y-hidden rounded-md bg-gray-100 p-5 sm:max-w-md">
           <h6 className="mb-1 block font-extrabold">S'inscrire</h6>
           <div title="Register">
-            <form onSubmit={submitHandler} className={classes.form}>
+            <form onSubmit={submitHandler2} className={classes.form}>
               <List>
                 <ListItem>
                   <TextField

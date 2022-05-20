@@ -83,6 +83,8 @@ export default function PlaceOrder() {
       enqueueSnackbar(getError(err), { variant: 'error' })
     }
   }
+
+  // console.log(userInfo.token)
   return (
     <div title="Place Order">
       <CheckoutWizard activeStep={3}></CheckoutWizard>
@@ -96,7 +98,7 @@ export default function PlaceOrder() {
             <List>
               <ListItem>
                 <Typography component="h2" variant="h6">
-                  adresse de livraison
+                  Adresse de livraison
                 </Typography>
               </ListItem>
               <ListItem>

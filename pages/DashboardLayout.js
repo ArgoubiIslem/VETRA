@@ -9,6 +9,8 @@ import Produits from '../components/Produits'
 import Sidebar from '../components/Sidebar'
 import Fournisseurs from '../components/Fournisseurs'
 import Users from '../components/Users'
+import Contacts from '../components/Contacts'
+import Abonnees from '../components/Abonnees'
 
 function DashboardLayout() {
   // console.log(dashboard)
@@ -20,6 +22,8 @@ function DashboardLayout() {
   const [showPromos, setShowPromos] = useState(false)
   const [showEvenement, setShowEvenement] = useState(false)
   const [showUsers, setShowUsers] = useState(false)
+  const [showContacts, setShowContacts] = useState(false)
+  const [showAbonnees, setShowAbonnees] = useState(false)
   return (
     <div className="font-roboto flex h-screen bg-gray-200">
       <Sidebar
@@ -30,6 +34,8 @@ function DashboardLayout() {
         pro={setShowPromos}
         event={setShowEvenement}
         user={setShowUsers}
+        contact={setShowContacts}
+        abonnee={setShowAbonnees}
       />
 
       <div className="flex flex-1 flex-col overflow-hidden">
@@ -46,6 +52,8 @@ function DashboardLayout() {
           {showPromos ? <Promos /> : null}
           {showEvenement ? <Evenement /> : null}
           {showUsers ? <Users /> : null}
+          {showContacts ? <Contacts /> : null}
+          {showAbonnees ? <Abonnees /> : null}
 
           {/* <div className="container mx-auto px-6 py-8">
           

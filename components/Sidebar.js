@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Dashboard from './Dashboard'
 import DashboardLayout from '../pages/DashboardLayout'
-function Sidebar({ dash, prod, order, four, pro, event, user }) {
-  // const [showDashboard, setShowDashboard] = useState(true)
-  // const [showProduits, setShowProduits] = useState(false)
-  // const [showOrders, setShowOrders] = useState(false)
-  // const [showVendeurs, setShowVendeurs] = useState(false)
-  // const [showCategories, setShowCategories] = useState(false)
+function Sidebar({
+  dash,
+  prod,
+  order,
+  four,
+  pro,
+  event,
+  user,
+  contact,
+  abonnee,
+}) {
   return (
     <div className="flex">
       <div className="fixed inset-0 z-20 bg-black opacity-50 transition-opacity lg:hidden"></div>
@@ -15,7 +20,8 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
       <div className="fixed inset-y-0 left-0 z-30 w-64 transform overflow-y-auto bg-gray-900 transition duration-300 lg:static lg:inset-0 lg:translate-x-0">
         <div className="mt-8 flex items-center justify-center">
           <div className="flex items-center">
-            <svg
+            {/* Logooooo */}
+            {/* <svg
               className="h-12 w-12"
               viewBox="0 0 512 512"
               fill="none"
@@ -33,11 +39,12 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 d="M201.694 387.105C231.686 417.098 280.312 417.098 310.305 387.105C325.301 372.109 332.8 352.456 332.8 332.8C332.8 313.144 325.301 293.491 310.305 278.495C295.309 263.498 288 256 275.2 230.4C256 243.2 243.201 320 243.201 345.6C201.694 345.6 179.2 332.8 179.2 332.8C179.2 352.456 186.698 372.109 201.694 387.105Z"
                 fill="white"
               />
-            </svg>
-
-            <span className="mx-2 text-2xl font-semibold text-white">
-              VETRA
-            </span>
+            </svg> */}
+            <Link href="/">
+              <span className="mx-2 text-2xl font-semibold text-white">
+                VETRA
+              </span>
+            </Link>
           </div>
         </div>
 
@@ -50,8 +57,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 prod(false) ||
                 four(false) ||
                 pro(false) ||
+                event(false) ||
                 user(false) ||
-                event(false)
+                contact(false) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -70,11 +79,6 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   fill="currentColor"
                 />
               </svg>
-
-              {/* <Link
-                href="/DashboardLayout"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              > */}
               <a
                 onClick={() =>
                   order(false) ||
@@ -82,8 +86,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   prod(false) ||
                   four(false) ||
                   pro(false) ||
+                  event(false) ||
                   user(false) ||
-                  event(false)
+                  contact(false) ||
+                  abonnee(false)
                 }
               >
                 <span className="mx-4">Tableau de bord</span>
@@ -97,8 +103,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 prod(true) ||
                 four(false) ||
                 pro(false) ||
+                event(false) ||
                 user(false) ||
-                event(false)
+                contact(false) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -115,10 +123,6 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                 />
               </svg>
-              {/* <Link
-                href="/produits"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              > */}
               <a
                 onClick={() =>
                   order(false) ||
@@ -126,8 +130,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   prod(true) ||
                   four(false) ||
                   pro(false) ||
+                  event(false) ||
                   user(false) ||
-                  event(false)
+                  contact(false) ||
+                  abonnee(false)
                 }
               >
                 <span className="mx-4">Produits</span>
@@ -142,8 +148,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 prod(false) ||
                 four(false) ||
                 pro(false) ||
+                event(false) ||
                 user(false) ||
-                event(false)
+                contact(false) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -160,16 +168,6 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-
-              {/* <Link
-                href="/orders"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              >
-                <a>
-                  {' '}
-                  <span className="mx-4">Orders</span>
-                </a>
-              </Link> */}
               <a
                 onClick={() =>
                   order(true) ||
@@ -177,8 +175,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   prod(false) ||
                   four(false) ||
                   pro(false) ||
+                  event(false) ||
                   user(false) ||
-                  event(false)
+                  contact(false) ||
+                  abonnee(false)
                 }
               >
                 <span className="mx-4">Commandes</span>
@@ -189,10 +189,12 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 order(false) ||
                 dash(false) ||
                 prod(false) ||
-                four(true) ||
-                pro(false) ||
+                four(false) ||
+                pro(true) ||
+                event(false) ||
                 user(false) ||
-                event(false)
+                contact(false) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -209,26 +211,20 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              {/* <Link
-                href="/vendeurs"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              >
-                <a>
-                  <span className="mx-4">Les vendeurs</span>
-                </a>
-              </Link> */}
               <a
                 onClick={() =>
                   order(false) ||
                   dash(false) ||
                   prod(false) ||
-                  four(true) ||
+                  four(false) ||
                   pro(true) ||
+                  event(false) ||
                   user(false) ||
-                  event(false)
+                  contact(false) ||
+                  abonnee(false)
                 }
               >
-                <span className="mx-4">Fournissuers</span>
+                <span className="mx-4">Promotion</span>
               </a>
             </li>
             <li
@@ -237,9 +233,11 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 dash(false) ||
                 prod(false) ||
                 four(false) ||
-                pro(true) ||
+                pro(false) ||
+                event(true) ||
                 user(false) ||
-                event(false)
+                contact(false) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -262,16 +260,8 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 <line x1="14" y1="7" x2="20" y2="7" />{' '}
                 <line x1="17" y1="4" x2="17" y2="10" />
               </svg>
-              {/* <Link
-                href="/categorie"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              >
-                <a>
-                  <span className="mx-4">Catégories</span>
-                </a>
-              </Link> */}
               <a>
-                <span className="mx-4">Promos</span>
+                <span className="mx-4">Evenements</span>
               </a>
             </li>
             <li
@@ -281,8 +271,10 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 prod(false) ||
                 four(false) ||
                 pro(false) ||
-                event(true) ||
-                user(false)
+                event(false) ||
+                user(false) ||
+                contact(true) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -305,11 +297,6 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 <line x1="4" y1="11" x2="20" y2="11" />{' '}
                 <rect x="8" y="15" width="2" height="2" />
               </svg>
-
-              {/* <Link
-                href="/DashboardLayout"
-                className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
-              > */}
               <a
                 onClick={() =>
                   order(false) ||
@@ -317,11 +304,13 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   prod(false) ||
                   four(false) ||
                   pro(false) ||
-                  event(true) ||
-                  user(false)
+                  event(false) ||
+                  user(false) ||
+                  contact(true) ||
+                  abonnee(false)
                 }
               >
-                <span className="mx-4">Evenement</span>
+                <span className="mx-4">Avis</span>
               </a>
               {/* </Link> */}
             </li>
@@ -333,7 +322,98 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                 four(false) ||
                 pro(false) ||
                 event(false) ||
-                user(true)
+                user(false) ||
+                contact(false) ||
+                abonnee(true)
+              }
+              className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
+            >
+              <svg
+                class="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <a
+                onClick={() =>
+                  order(false) ||
+                  dash(false) ||
+                  prod(false) ||
+                  four(false) ||
+                  pro(false) ||
+                  event(false) ||
+                  user(false) ||
+                  contact(false) ||
+                  abonnee(true)
+                }
+              >
+                <span className="mx-4">Abonnées</span>
+              </a>
+              {/* </Link> */}
+            </li>
+            <li
+              onClick={() =>
+                order(false) ||
+                dash(false) ||
+                prod(false) ||
+                four(false) ||
+                pro(false) ||
+                event(false) ||
+                user(true) ||
+                contact(false) ||
+                abonnee(false)
+              }
+              className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
+            >
+              <svg
+                class="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <a
+                onClick={() =>
+                  order(false) ||
+                  dash(false) ||
+                  prod(false) ||
+                  four(false) ||
+                  pro(false) ||
+                  event(false) ||
+                  user(true) ||
+                  contact(false) ||
+                  abonnee(false)
+                }
+              >
+                <span className="mx-4">Utilisateurs</span>
+              </a>
+              {/* </Link> */}
+            </li>
+
+            <li
+              onClick={() =>
+                order(false) ||
+                dash(false) ||
+                prod(false) ||
+                four(true) ||
+                pro(false) ||
+                event(false) ||
+                user(false) ||
+                contact(false) ||
+                abonnee(false)
               }
               className="mt-4 flex cursor-pointer space-x-2 px-6 py-4 font-bold text-white transition duration-100 hover:rounded-br-3xl hover:bg-white hover:text-blue-800"
             >
@@ -360,13 +440,15 @@ function Sidebar({ dash, prod, order, four, pro, event, user }) {
                   order(false) ||
                   dash(false) ||
                   prod(false) ||
-                  four(false) ||
+                  four(true) ||
                   pro(false) ||
                   event(false) ||
-                  user(true)
+                  user(false) ||
+                  contact(false) ||
+                  abonnee(false)
                 }
               >
-                <span className="mx-4">Utilisateurs</span>
+                <span className="mx-4">Fournisseurs</span>
               </a>
               {/* </Link> */}
             </li>

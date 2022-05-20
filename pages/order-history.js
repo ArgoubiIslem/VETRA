@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
-import React, { useEffect, useContext, useReducer } from 'react'
+import React, { useEffect, useState, useContext, useReducer } from 'react'
 import {
   CircularProgress,
   Grid,
@@ -18,6 +18,7 @@ import {
   TableBody,
   Button,
   ListItemText,
+  MenuItem,
 } from '@material-ui/core'
 import { getError } from '../utils/error'
 import { Store } from '../utils/Store'
@@ -65,17 +66,38 @@ function OrderHistory() {
     }
     fetchOrders()
   }, [])
+  const [anchorEl, setAnchorEl] = useState(null)
+  const loginClickHandler = (e) => {
+    setAnchorEl(e.currentTarget)
+  }
+  const loginMenuCloseHandler = (e, redirect) => {
+    setAnchorEl(null)
+    if (redirect) {
+      router.push(redirect)
+    }
+  }
   return (
     <div title="Order History">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <Card className={classes.section}>
             <List>
-              <NextLink href="/profile" passHref>
+              {userInfo.isAdmin ? (
+                <MenuItem
+                  onClick={(e) => loginMenuCloseHandler(e, '/profileAd')}
+                >
+                  Profile
+                </MenuItem>
+              ) : (
+                <MenuItem onClick={(e) => loginMenuCloseHandler(e, '/profile')}>
+                  Profile
+                </MenuItem>
+              )}
+              {/* <NextLink href="/profile" passHref>
                 <ListItem button component="a">
                   <ListItemText primary="User Profile"></ListItemText>
                 </ListItem>
-              </NextLink>
+              </NextLink> */}
               <NextLink href="/order-history" passHref>
                 <ListItem selected button component="a">
                   <ListItemText primary="Order History"></ListItemText>
@@ -104,9 +126,9 @@ function OrderHistory() {
                         <TableRow>
                           <TableCell>ID</TableCell>
                           <TableCell>DATE</TableCell>
-                          <TableCell>TOTAL</TableCell>
-                          <TableCell>PAID</TableCell>
-                          <TableCell>DELIVERED</TableCell>
+                          <TableCell>TOTALE</TableCell>
+                          <TableCell>PAYÉ</TableCell>
+                          <TableCell>LIVRÉ</TableCell>
                           <TableCell>ACTION</TableCell>
                         </TableRow>
                       </TableHead>

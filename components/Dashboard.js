@@ -1,6 +1,87 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Dashboard() {
+  const [productsData, setProductsData] = useState(null)
+  const [ordersData, setOrdersData] = useState(null)
+  const [usersData, setUsersData] = useState(null)
+  let nbr = 0
+  let nbr1 = 0
+  let nbr2 = 0
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await fetch('http://localhost:3000/api/products')
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`)
+        }
+
+        const result = await response.json()
+        console.log(result['data'])
+        setProductsData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response1 = await fetch('http://localhost:3000/api/orders')
+
+        if (!response1.ok) {
+          throw new Error(`Error! status: ${response1.status}`)
+        }
+
+        const result = await response1.json()
+        console.log(result['data'])
+        setOrdersData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response2 = await fetch('http://localhost:3000/api/users')
+
+        if (!response2.ok) {
+          throw new Error(`Error! status: ${response2.status}`)
+        }
+
+        const result = await response2.json()
+        console.log(result['data'])
+        setUsersData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+
   return (
     <div className="bg-gray-100 ">
       <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
@@ -48,9 +129,15 @@ function Dashboard() {
                   </div>
 
                   <div className="mx-5">
+                    {ordersData?.map(function (order, i) {
+                      {
+                        nbr2 = nbr2 + 1
+                      }
+                    })}
                     <h4 className="text-2xl font-semibold text-gray-700">
-                      8,282
+                      {nbr2}
                     </h4>
+
                     <div className="text-gray-500">Ventes totales</div>
                   </div>
                 </div>
@@ -81,10 +168,16 @@ function Dashboard() {
                   </div>
 
                   <div className="mx-5">
+                    {usersData?.map(function (user, i) {
+                      {
+                        nbr1 = nbr1 + 1
+                      }
+                    })}
                     <h4 className="text-2xl font-semibold text-gray-700">
-                      200,521
+                      {nbr1}
                     </h4>
-                    <div className="text-gray-500">Commandes totales</div>
+
+                    <div className="text-gray-500">Utilisateurs totales</div>
                   </div>
                 </div>
               </div>
@@ -112,12 +205,17 @@ function Dashboard() {
                       />
                     </svg>
                   </div>
-
                   <div className="mx-5">
+                    {productsData?.map(function (product, i) {
+                      {
+                        nbr = nbr + 1
+                      }
+                    })}
                     <h4 className="text-2xl font-semibold text-gray-700">
-                      215,542
+                      {nbr}
                     </h4>
-                    <div className="text-gray-500">Produits totaux</div>
+
+                    <div className="text-gray-500">Produits totales</div>
                   </div>
                 </div>
               </div>

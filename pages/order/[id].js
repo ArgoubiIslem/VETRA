@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import { useContext, useEffect, useReducer } from 'react'
 import dynamic from 'next/dynamic'
 
 import { Store } from '../../utils/Store'
@@ -61,7 +61,7 @@ function reducer(state, action) {
   }
 }
 
-function Order({ params }) {
+export default function Order({ params }) {
   const orderId = params.id
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
   const classes = useStyles()
@@ -195,8 +195,8 @@ function Order({ params }) {
 
   return (
     <div title={`Order ${orderId}`}>
-      <Typography component="h1" variant="h1">
-        Order {orderId}
+      <Typography component="h1" variant="h6">
+        Commande {orderId}
       </Typography>
       {loading ? (
         <CircularProgress />
@@ -208,8 +208,8 @@ function Order({ params }) {
             <Card className={classes.section}>
               <List>
                 <ListItem>
-                  <Typography component="h2" variant="h2">
-                    Shipping Address
+                  <Typography component="h2" variant="h6">
+                    Adresse de livraison
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -223,12 +223,12 @@ function Order({ params }) {
                       target="_new"
                       href={`https://maps.google.com?q=${shippingAddress.location.lat},${shippingAddress.location.lng}`}
                     >
-                      Show On Map
+                      Afficher sur la carte
                     </Link>
                   )}
                 </ListItem>
                 <ListItem>
-                  Status:{' '}
+                  Statut:{' '}
                   {isDelivered
                     ? `delivered at ${deliveredAt}`
                     : 'not delivered'}
@@ -238,21 +238,21 @@ function Order({ params }) {
             <Card className={classes.section}>
               <List>
                 <ListItem>
-                  <Typography component="h2" variant="h2">
-                    Payment Method
+                  <Typography component="h2" variant="h6">
+                    Mode de paiement
                   </Typography>
                 </ListItem>
                 <ListItem>{paymentMethod}</ListItem>
                 <ListItem>
-                  Status: {isPaid ? `paid at ${paidAt}` : 'not paid'}
+                  Statut: {isPaid ? `paid at ${paidAt}` : 'not paid'}
                 </ListItem>
               </List>
             </Card>
             <Card className={classes.section}>
               <List>
                 <ListItem>
-                  <Typography component="h2" variant="h2">
-                    Order Items
+                  <Typography component="h2" variant="h6">
+                    Articles commandés
                   </Typography>
                 </ListItem>
                 <ListItem>
@@ -261,16 +261,19 @@ function Order({ params }) {
                       <TableHead>
                         <TableRow>
                           <TableCell>Image</TableCell>
-                          <TableCell>Name</TableCell>
-                          <TableCell align="right">Quantity</TableCell>
-                          <TableCell align="right">Price</TableCell>
+                          <TableCell>Produit</TableCell>
+                          <TableCell align="right">Quantité</TableCell>
+                          <TableCell align="right">Prix</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {orderItems.map((item) => (
                           <TableRow key={item._id}>
                             <TableCell>
-                              <NextLink href={`/product/${item.slug}`} passHref>
+                              <NextLink
+                                href={`/${item._id}/DetailPage`}
+                                passHref
+                              >
                                 <Link>
                                   <Image
                                     src={item.image}
@@ -283,9 +286,12 @@ function Order({ params }) {
                             </TableCell>
 
                             <TableCell>
-                              <NextLink href={`/product/${item.slug}`} passHref>
+                              <NextLink
+                                href={`/${item._id}/DetailPage`}
+                                passHref
+                              >
                                 <Link>
-                                  <Typography>{item.name}</Typography>
+                                  <Typography>{item.nom}</Typography>
                                 </Link>
                               </NextLink>
                             </TableCell>
@@ -293,7 +299,7 @@ function Order({ params }) {
                               <Typography>{item.quantity}</Typography>
                             </TableCell>
                             <TableCell align="right">
-                              <Typography>${item.price}</Typography>
+                              <Typography>{item.prix}DT</Typography>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -308,15 +314,17 @@ function Order({ params }) {
             <Card className={classes.section}>
               <List>
                 <ListItem>
-                  <Typography variant="h2">Order Summary</Typography>
+                  <Typography variant="h6">
+                    Récapitulatif de la commande
+                  </Typography>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Items:</Typography>
+                      <Typography>Articles:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${itemsPrice}</Typography>
+                      <Typography align="right">{itemsPrice}DT</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
@@ -326,17 +334,17 @@ function Order({ params }) {
                       <Typography>Tax:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${taxPrice}</Typography>
+                      <Typography align="right">{taxPrice}DT</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Shipping:</Typography>
+                      <Typography>Expédition:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${shippingPrice}</Typography>
+                      <Typography align="right">{shippingPrice}DT</Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
@@ -344,12 +352,12 @@ function Order({ params }) {
                   <Grid container>
                     <Grid item xs={6}>
                       <Typography>
-                        <strong>Total:</strong>
+                        <strong>Totale:</strong>
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="right">
-                        <strong>${totalPrice}</strong>
+                        <strong>{totalPrice}DT</strong>
                       </Typography>
                     </Grid>
                   </Grid>
@@ -378,7 +386,7 @@ function Order({ params }) {
                       color="primary"
                       onClick={deliverOrderHandler}
                     >
-                      Deliver Order
+                      Livrer la commande
                     </Button>
                   </ListItem>
                 )}

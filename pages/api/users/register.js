@@ -15,7 +15,9 @@ handler.post(async (req, res) => {
   })
   const user = await newUser.save()
 
+  const token = signToken(user)
   res.send({
+    token,
     _id: user._id,
     nomP: user.nomP,
     email: user.email,
