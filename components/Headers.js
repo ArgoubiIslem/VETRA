@@ -18,7 +18,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack'
 import { getError } from '../utils/error'
 function Headers() {
-  const classes = useStyles()
+  const classNamees = useStyles()
   const router = useRouter()
   const [productsData, setProductsData] = useState(null)
   const { state, dispatch } = useContext(Store)
@@ -142,39 +142,38 @@ function Headers() {
 
             <ul className="font-heading mx-auto hidden space-x-12 px-4 font-semibold md:flex">
               <li>
-                <li>
-                  <div className="group  inline-block">
-                    <button className="min-w-32 flex items-center rounded-sm  bg-transparent px-3  outline-none focus:outline-none">
-                      <Link href="ProdFemme">
-                        <a className="flex-1 pr-1 font-semibold">FEMME</a>
-                      </Link>
-                      <span>
-                        <svg
-                          className="h-4 w-4 transform  fill-current transition duration-150 ease-in-out group-hover:-rotate-180"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                      </span>
-                    </button>
+                <div className="group  inline-block">
+                  <button className="min-w-32 flex items-center rounded-sm  bg-transparent px-3  outline-none focus:outline-none">
+                    <Link href="ProdFemme">
+                      <a className="flex-1 pr-1 font-semibold">FEMME</a>
+                    </Link>
+                    <span>
+                      {/* <svg
+                        className="h-4 w-4 transform  fill-current transition duration-150 ease-in-out group-hover:-rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg> */}
+                    </span>
+                  </button>
 
-                    <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
-                      <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          {productsData
-                            ? productsData?.map(function (product, i) {
-                                // console.log(productsData)
-                                if (product.categorie == 'Femme') {
-                                  return (
-                                    <a
-                                      key={i}
-                                      class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                  {/* <div className="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
+                    <div className="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg"> */}
+                  {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {productsData
+                          ? productsData?.map(function (product, i) {
+                              // console.log(productsData)
+                              if (product.categorie == 'Femme') {
+                                return (
+                                  <div key={i}>
+                                    <Link
+                                      className="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
                                       href={`/Prod/${product.sousCategorie}`}
                                     >
-                                      <div class="ml-3">
+                                      <div className="ml-3">
                                         <button
-                                          class="font-semibold"
+                                          className="font-semibold"
                                           onClick={() =>
                                             filterResult(product.sousCategorie)
                                           }
@@ -182,49 +181,49 @@ function Headers() {
                                           {product.sousCategorie}
                                         </button>
                                       </div>
-                                    </a>
-                                  )
-                                }
-                                return null
-                              })
-                            : null}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                                    </Link>
+                                  </div>
+                                )
+                              }
+                              return null
+                            })
+                          : null}
+                      </div> */}
+                  {/* </div>
+                  </div> */}
+                </div>
               </li>
               <li>
-                <li>
-                  <div className="group  inline-block">
-                    <button className="min-w-32 flex items-center rounded-sm  bg-transparent px-3  outline-none focus:outline-none">
-                      <Link href="ProdHomme">
-                        <a className="flex-1 pr-1 font-semibold">HOMME</a>
-                      </Link>
-                      <span>
-                        <svg
-                          className="h-4 w-4 transform  fill-current transition duration-150 ease-in-out group-hover:-rotate-180"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                      </span>
-                    </button>
+                <div className="group  inline-block">
+                  <button className="min-w-32 flex items-center rounded-sm  bg-transparent px-3  outline-none focus:outline-none">
+                    <Link href="ProdHomme">
+                      <a className="flex-1 pr-1 font-semibold">HOMME</a>
+                    </Link>
+                    <span>
+                      {/* <svg
+                        className="h-4 w-4 transform  fill-current transition duration-150 ease-in-out group-hover:-rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg> */}
+                    </span>
+                  </button>
 
-                    <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
-                      <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          {productsData?.map(function (product, i) {
-                            console.log(productsData)
-                            return (
+                  {/* <div className="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
+                    <div className="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {productsData?.map(function (product, i) {
+                          console.log(productsData)
+                          return (
+                            <div key={i}>
                               <a
-                                class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                                className="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
                                 href="/Prod"
                               >
-                                <div class="ml-3">
+                                <div className="ml-3">
                                   <button
-                                    class="font-semibold"
+                                    className="font-semibold"
                                     onClick={() =>
                                       filterResult(product.sousCategorie)
                                     }
@@ -233,13 +232,13 @@ function Headers() {
                                   </button>
                                 </div>
                               </a>
-                            )
-                          })}
-                        </div>
+                            </div>
+                          )
+                        })}
                       </div>
                     </div>
-                  </div>
-                </li>
+                  </div> */}
+                </div>
               </li>
               <li>
                 <li>
@@ -249,29 +248,30 @@ function Headers() {
                         <a className="flex-1 pr-1 font-semibold">ENFANT</a>
                       </Link>
                       <span>
-                        <svg
+                        {/* <svg
                           className="h-4 w-4 transform  fill-current transition duration-150 ease-in-out group-hover:-rotate-180"
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                         >
                           <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
+                        </svg> */}
                       </span>
                     </button>
 
-                    <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
-                      <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {/* <div className="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
+                      <div className="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                           {productsData?.map(function (product, i) {
                             console.log(productsData)
                             return (
                               <a
-                                class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                                key={i}
+                                className="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
                                 href="/Prod"
                               >
-                                <div class="ml-3">
+                                <div className="ml-3">
                                   <button
-                                    class="font-semibold"
+                                    className="font-semibold"
                                     onClick={() =>
                                       filterResult(product.sousCategorie)
                                     }
@@ -284,7 +284,7 @@ function Headers() {
                           })}
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </li>
               </li>
@@ -473,7 +473,7 @@ function Headers() {
                   <div className="flex items-center rounded-xl border-2 p-0">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-6 w-6 text-gray-400"
+                      className="h-6 w-6 text-gray-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -488,7 +488,7 @@ function Headers() {
                     <input
                       type="text"
                       placeholder="Search"
-                      class="ml-2 w-full outline-none"
+                      className="ml-2 w-full outline-none"
                     />
                   </div>
                 </div>
@@ -511,7 +511,7 @@ function Headers() {
           <div title="Login">
             <form
               onSubmit={handleSubmit(submitHandler)}
-              className={classes.form}
+              className={classNamees.form}
             >
               <List>
                 <ListItem>
@@ -601,7 +601,7 @@ function Headers() {
         <div className="absolute right-8  top-16 z-50 mx-auto  max-h-full w-full  overflow-y-hidden rounded-md bg-gray-100 p-5 sm:max-w-md">
           <h6 className="mb-1 block font-extrabold">S'inscrire</h6>
           <div title="Register">
-            <form onSubmit={submitHandler2} className={classes.form}>
+            <form onSubmit={submitHandler2} className={classNamees.form}>
               <List>
                 <ListItem>
                   <TextField

@@ -10,7 +10,7 @@ import useStyles from '../../utils/styles'
 import Link from 'next/link'
 
 function SousCat() {
-  const classes = useStyles()
+  const classNamees = useStyles()
   const router = useRouter()
   const [productsData, setProductsData] = useState(null)
   const { state, dispatch } = useContext(Store)
@@ -99,6 +99,7 @@ function SousCat() {
         const result = await response.json()
         console.log(result['data'])
         setProductsData(result['data'])
+
         return result
       } catch (err) {
         console.log(err)
@@ -134,7 +135,7 @@ function SousCat() {
           <Breadcrumb />
           <div className="container mx-auto px-6">
             <div className=" flex justify-end space-x-0.5">
-              <div class="flex-inline w-1/2 space-y-0.5">
+              <div className="flex-inline w-1/2 space-y-0.5">
                 <div className="item order-first  h-60 ">
                   <div className="item h-28">
                     <div className="container mx-auto flex px-6 ">
@@ -142,16 +143,16 @@ function SousCat() {
                         <nav className="mt-5">
                           <ul>
                             <li>
-                              <div class=" absolute mb-6 flex h-64  max-w-xs flex-col justify-between   bg-white py-5 px-4 ">
+                              <div className=" absolute mb-6 flex h-64  max-w-xs flex-col justify-between   bg-white py-5 px-4 ">
                                 {' '}
                                 <fieldset>
-                                  <span class="mb-1 p-2 font-semibold text-gray-800">
+                                  <span className="mb-1 p-2 font-semibold text-gray-800">
                                     CATÉGORIES
                                   </span>
                                   <br></br>
                                   <br></br>
 
-                                  <div class="mb-4 flex items-center">
+                                  <div className="mb-4 flex items-center">
                                     {/* <select
                                 className="custom-select text-capitalize"
                                 value={category}
@@ -218,10 +219,10 @@ function SousCat() {
                                     {product.prix} DT
                                   </span>
                                   <Link href={`/${product._id}/DetailPage`}>
-                                    <span class="mt-4 flex w-full items-center justify-center rounded bg-yellow-400 py-1 hover:bg-yellow-500">
+                                    <span className="mt-4 flex w-full items-center justify-center rounded bg-yellow-400 py-1 hover:bg-yellow-500">
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6"
+                                        className="h-6 w-6"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -233,7 +234,7 @@ function SousCat() {
                                           d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                                         />
                                       </svg>
-                                      <button class="font-semibold text-gray-800">
+                                      <button className="font-semibold text-gray-800">
                                         Ajouter au panier
                                       </button>
                                     </span>
