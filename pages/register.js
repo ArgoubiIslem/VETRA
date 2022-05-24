@@ -51,67 +51,62 @@ export default function Register() {
   return (
     <div title="Register">
       <form onSubmit={submitHandler} className={classes.form}>
-        <Typography component="h1" variant="1">
+        <Typography component="h1" variant="h4">
           S'inscrire
-          <List>
-            <ListItem>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="nomP"
-                label="Nom Prenom"
-                inputProps={{ type: 'text' }}
-                onChange={(e) => setNomP(e.target.value)}
-              ></TextField>
-            </ListItem>
-            <ListItem>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="email"
-                label="Email"
-                inputProps={{ type: 'email' }}
-                onChange={(e) => setEmail(e.target.value)}
-              ></TextField>
-            </ListItem>
-            <ListItem>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="password"
-                label="Mot de passe"
-                inputProps={{ type: 'password' }}
-                onChange={(e) => setPassword(e.target.value)}
-              ></TextField>
-            </ListItem>
-            <ListItem>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="confirmPassword"
-                label="Confirmer Mot de passe"
-                inputProps={{ type: 'password' }}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              ></TextField>
-            </ListItem>
-            <ListItem>
-              <Button
-                variant="contained"
-                type="submit"
-                fullWidth
-                color="primary"
-              >
-                S'inscrire
-              </Button>
-            </ListItem>
-            <ListItem>
-              Déjà un compte?{' '}
-              <NextLink href={`/login?redirect=${redirect || '/'}`} passHref>
-                <Link>Connexion</Link>
-              </NextLink>
-            </ListItem>
-          </List>
         </Typography>
+        <List>
+          <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="nomP"
+              label="Nom Prenom"
+              inputProps={{ type: 'text' }}
+              onChange={(e) => setNomP(e.target.value)}
+            ></TextField>
+          </ListItem>
+          <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="email"
+              label="Email"
+              inputProps={{ type: 'email' }}
+              onChange={(e) => setEmail(e.target.value)}
+            ></TextField>
+          </ListItem>
+          <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="password"
+              label="Mot de passe"
+              inputProps={{ type: 'password' }}
+              onChange={(e) => setPassword(e.target.value)}
+            ></TextField>
+          </ListItem>
+          <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="confirmPassword"
+              label="Confirmer Mot de passe"
+              inputProps={{ type: 'password' }}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            ></TextField>
+          </ListItem>
+          <ListItem>
+            <Button variant="contained" type="submit" fullWidth color="primary">
+              S'inscrire
+            </Button>
+          </ListItem>
+          <ListItem>
+            Déjà un compte? &nbsp;
+            <NextLink href={`/login?redirect=${redirect || '/'}`} passHref>
+              <Link>Connexion</Link>
+            </NextLink>
+          </ListItem>
+        </List>
       </form>
     </div>
   )

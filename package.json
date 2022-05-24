@@ -13,6 +13,7 @@
     "@strapi/plugin-i18n": "^4.1.9",
     "@strapi/plugin-users-permissions": "^4.1.9",
     "@strapi/strapi": "^4.1.9",
+    "antd": "^4.20.5",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",

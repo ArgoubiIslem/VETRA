@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import Info from '../components/Info'
 import Media from '../components/Media'
 import Headers from '../components/Headers'
+import filterSearch from '../utils/filterSearch'
 import Navbar from '../components/Navbar'
 import Filter from '../components/Filter'
 import Link from 'next/link'
@@ -10,10 +11,17 @@ import RangeSlider from '../components/RangeSlider'
 import Marque from '../components/Marque'
 import Breadcrumb from '../components/BreadCrumb'
 
+import { useRouter } from 'next/router'
+
 function ProdFemme() {
   const [productsData, setProductsData] = useState(null)
   const [newProduct, setNewProduct] = useState(false)
-
+  const [category, setCategory] = useState('')
+  const router = useRouter()
+  const handleCategory = (e) => {
+    setCategory(e.target.value)
+    filterSearch({ router, category: e.target.value })
+  }
   useEffect(() => {
     async function getUser() {
       try {
@@ -38,6 +46,12 @@ function ProdFemme() {
       // make sure to catch any error
       .catch(console.error)
   }, [])
+  const filterResult = (catItem) => {
+    const result = productsData?.filter((curData) => {
+      return curData.sousCategorie === catItem
+    })
+    setProductsData(result)
+  }
   return (
     <div>
       <Headers />
@@ -53,11 +67,62 @@ function ProdFemme() {
             <div className=" flex justify-end space-x-0.5">
               <div class="flex-inline w-1/2 space-y-0.5">
                 <div className="item order-first  h-60 ">
-                  <Marque />
-                </div>
+                  <div className="item h-28">
+                    <div className="container mx-auto flex px-6 ">
+                      <div className="bg-white-100 fixed inset-y-0 left-0 z-30 w-64  transform transition duration-300 lg:static lg:translate-x-0">
+                        <nav className="mt-5">
+                          <ul>
+                            <li>
+                              <div class=" absolute mb-6 flex h-64  max-w-xs flex-col justify-between   bg-white py-5 px-4 ">
+                                {' '}
+                                <fieldset>
+                                  <span class="mb-1 p-2 font-semibold text-gray-800">
+                                    CATÉGORIES
+                                  </span>
+                                  <br></br>
+                                  <br></br>
 
-                <div className="item h-28">
-                  <Filter />
+                                  <div class="mb-4 flex items-center">
+                                    {/* <select
+                                    className="custom-select text-capitalize"
+                                    value={category}
+                                    onChange={handleCategory}
+                                  >
+                                    <option value="all">All Products</option> */}
+
+                                    {productsData
+                                      ? productsData?.map(function (
+                                          product,
+                                          i
+                                        ) {
+                                          if (product.categorie == 'Femme') {
+                                            return (
+                                              <div key={i}>
+                                                <button
+                                                  onClick={() =>
+                                                    filterResult(
+                                                      product.sousCategorie
+                                                    )
+                                                  }
+                                                >
+                                                  {product.sousCategorie}
+                                                </button>
+                                                <br></br>
+                                              </div>
+                                            )
+                                          }
+                                          return null
+                                        })
+                                      : null}
+                                  </div>
+                                </fieldset>
+                              </div>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className=" grid grid-cols-1  gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
@@ -114,7 +179,7 @@ function ProdFemme() {
                   })}
               </div>
             </div>
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
               <div className="mt-8 flex rounded-md">
                 <a
                   href="#"
@@ -147,7 +212,7 @@ function ProdFemme() {
                   <span>Next</span>
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </main>
       </div>

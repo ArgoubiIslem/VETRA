@@ -1,9 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Marque from '../components/Marque'
-
-function Filter() {
+import filterSearch from '../utils/filterSearch'
+import { useRouter } from 'next/router'
+function Filter({ state }) {
   const [productsData, setProductsData] = useState(null)
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('')
+
+  const router = useRouter()
+  const handleCategory = (e) => {
+    setCategory(e.target.value)
+    filterSearch({ router, category: e.target.value })
+  }
+  useEffect(() => {
+    filterSearch({ router, search: search ? search.toLowerCase() : 'all' })
+  }, [search])
+
+  const filterResult = (catItem) => {
+    const result = productsData?.filter((curData) => {
+      setCategory(e.target.value)
+      return curData.categorie === catItem
+    })
+    setProductsData(result)
+  }
   useEffect(() => {
     async function getUser() {
       try {
@@ -42,25 +62,22 @@ function Filter() {
                   </span>
                   <br></br>
                   <br></br>
-                  {productsData?.map(function (product, i) {
-                    console.log(productsData)
-                    return (
-                      <div class="mb-4 flex items-center">
-                        <input
-                          id="checkbox-1"
-                          aria-describedby="checkbox-1"
-                          type="checkbox"
-                          class="h-4 w-4 rounded border-yellow-500 bg-yellow-500 text-yellow-500 focus:ring-2 focus:ring-yellow-500 dark:border-gray-600 dark:bg-yellow-500 dark:ring-offset-yellow-500 dark:focus:ring-yellow-500"
-                        />
-                        <label
-                          for="checkbox-1"
-                          class="ml-3 text-sm font-medium text-gray-900 "
-                        >
-                          {product.sousCategorie}
-                        </label>
-                      </div>
-                    )
-                  })}
+
+                  <div class="mb-4 flex items-center">
+                    <select
+                      className="custom-select text-capitalize"
+                      value={category}
+                      onChange={handleCategory}
+                    >
+                      <option value="all">All Products</option>
+
+                      {productsData?.map((item) => (
+                        <option key={item._id} value={item._id}>
+                          {item.sousCategorie}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </fieldset>
               </div>
             </li>

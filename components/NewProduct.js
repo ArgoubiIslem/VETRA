@@ -228,7 +228,7 @@ const NewProduct = () => {
                       console.log(productsData)
                       return (
                         <option
-                          key={product._id}
+                          key={i}
                           value={product.categorie}
                           data-val={product.categorie}
                         >

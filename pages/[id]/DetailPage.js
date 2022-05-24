@@ -50,7 +50,7 @@ const DetailPage = ({ product }) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    validate()
+
     setIsSubmitting(true)
   }
   const handleChange = (e) => {

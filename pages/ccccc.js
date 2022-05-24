@@ -1,12 +1,33 @@
 import React, { useEffect, useState } from 'react'
 
-function Carousels() {
+function ccccc() {
+  const [productsData, setProductsData] = useState(null)
   const [count, setCount] = useState(0)
-  const [list, setList] = useState([
-    'annonce.jpg',
-    'soldes.jpg',
-    'https://i.pinimg.com/originals/16/b4/92/16b492e15c32b195c52598b82a6504d2.gif',
-  ])
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await fetch('http://localhost:3000/api/products')
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`)
+        }
+
+        const result = await response.json()
+        console.log(result['data'])
+        setProductsData(result['data'])
+        return result
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    // declare the async data fetching function
+
+    // call the function
+    getUser()
+      // make sure to catch any error
+      .catch(console.error)
+  }, [])
+  const [list, setList] = useState([productsData])
   function next() {
     if (count < 2) {
       setCount(count + 1)
@@ -113,4 +134,4 @@ function Carousels() {
   )
 }
 
-export default Carousels
+export default ccccc

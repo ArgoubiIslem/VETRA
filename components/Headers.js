@@ -162,21 +162,32 @@ function Headers() {
                     <div class="min-w-32 absolute z-50  origin-top  scale-0 transform rounded-sm bg-transparent  text-black transition duration-150 ease-in-out group-hover:scale-100">
                       <div class="dark-mode:bg-gray-700 rounded-md bg-white px-2 pt-2 pb-4 shadow-lg">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          {productsData?.map(function (product, i) {
-                            console.log(productsData)
-                            return (
-                              <a
-                                class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                                href="/Prod"
-                              >
-                                <div class="ml-3">
-                                  <p class="font-semibold">
-                                    {product.sousCategorie}
-                                  </p>
-                                </div>
-                              </a>
-                            )
-                          })}
+                          {productsData
+                            ? productsData?.map(function (product, i) {
+                                // console.log(productsData)
+                                if (product.categorie == 'Femme') {
+                                  return (
+                                    <a
+                                      key={i}
+                                      class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
+                                      href={`/Prod/${product.sousCategorie}`}
+                                    >
+                                      <div class="ml-3">
+                                        <button
+                                          class="font-semibold"
+                                          onClick={() =>
+                                            filterResult(product.sousCategorie)
+                                          }
+                                        >
+                                          {product.sousCategorie}
+                                        </button>
+                                      </div>
+                                    </a>
+                                  )
+                                }
+                                return null
+                              })
+                            : null}
                         </div>
                       </div>
                     </div>
@@ -209,12 +220,17 @@ function Headers() {
                             return (
                               <a
                                 class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                                href="#"
+                                href="/Prod"
                               >
                                 <div class="ml-3">
-                                  <p class="font-semibold">
+                                  <button
+                                    class="font-semibold"
+                                    onClick={() =>
+                                      filterResult(product.sousCategorie)
+                                    }
+                                  >
                                     {product.sousCategorie}
-                                  </p>
+                                  </button>
                                 </div>
                               </a>
                             )
@@ -251,12 +267,17 @@ function Headers() {
                             return (
                               <a
                                 class="row  dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 focus:shadow-outline flex items-start rounded-lg bg-transparent p-2 hover:bg-gray-200 hover:text-gray-900 focus:bg-gray-200 focus:text-gray-900 focus:outline-none"
-                                href="#"
+                                href="/Prod"
                               >
                                 <div class="ml-3">
-                                  <p class="font-semibold">
+                                  <button
+                                    class="font-semibold"
+                                    onClick={() =>
+                                      filterResult(product.sousCategorie)
+                                    }
+                                  >
                                     {product.sousCategorie}
-                                  </p>
+                                  </button>
                                 </div>
                               </a>
                             )

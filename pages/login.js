@@ -54,7 +54,7 @@ export default function Login() {
     <div title="Login">
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Typography component="h1" variant="h4">
-          Login
+          Connexion
         </Typography>
         <List>
           <ListItem>
@@ -117,13 +117,13 @@ export default function Login() {
           </ListItem>
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
-              Login
+              Connexion
             </Button>
           </ListItem>
           <ListItem>
             Vous n'avez pas de compte ? &nbsp;
             <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
-              <Link>Register</Link>
+              <Link>Inscrire</Link>
             </NextLink>
           </ListItem>
         </List>

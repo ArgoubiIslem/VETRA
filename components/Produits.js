@@ -5,6 +5,8 @@ import NewProduct from './NewProduct'
 import { useRouter } from 'next/router'
 import { Confirm, Button, Loader } from 'semantic-ui-react'
 import EditProduct from '/pages/[id]/EditProduct'
+import PromoComp from './PromoComp'
+import ProductList from './ProductList'
 function Produits() {
   const [showPromo, setShowPromo] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -57,17 +59,17 @@ function Produits() {
       console.log(error)
     }
   }
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
 
-    setIsSubmitting(true)
-  }
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    })
-  }
+  //   setIsSubmitting(true)
+  // }
+  // const handleChange = (e) => {
+  //   setForm({
+  //     ...form,
+  //     [e.target.name]: e.target.value,
+  //   })
+  // }
   // Delete Product
   useEffect(() => {
     if (isDeleting) {
@@ -92,10 +94,10 @@ function Produits() {
     }
   }
 
-  const handleDelete = async () => {
-    setIsDeleting(true)
-    close()
-  }
+  // const handleDelete = async () => {
+  //   setIsDeleting(true)
+  //   close()
+  // }
 
   useEffect(() => {
     async function getUser() {
@@ -296,161 +298,16 @@ function Produits() {
             ) : (
               <div className="grid grid-cols-4 grid-rows-2 gap-2 overflow-hidden">
                 {productsData
-                  ?.filter((product) => {
-                    if (searchTerm == '') {
-                      return product
-                    } else if (
-                      product.nom
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    ) {
-                      return product
-                    }
-                  })
-                  .map(function (product, i) {
-                    console.log(productsData)
-                    return (
-                      <div className="mt-10 w-full" key={product._id}>
-                        <div className=" mx-auto  w-full max-w-sm grid-cols-4 gap-10 ">
-                          <div className="">
-                            {isDeleting ? (
-                              <Loader active />
-                            ) : (
-                              <>
-                                <div className="min-h-80  aspect-w-1 aspect-h-1 lg:aspect-none w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
-                                  <img
-                                    className="h-full w-full object-cover object-center lg:h-full lg:w-full "
-                                    src={product.image}
-                                    alt=""
-                                  />
-                                </div>
-                                <div className="px-5 py-3">
-                                  <span className="mt-2 text-gray-500">
-                                    {product.nom}
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      !showPromo
-                                        ? setShowPromo(true)
-                                        : setShowPromo(false)
-                                    }
-                                    className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none"
-                                    type="button"
-                                  >
-                                    Promo
-                                  </button>
-                                  {showPromo ? (
-                                    <div className="left-100  fixed top-40  z-50 mx-auto  max-h-full w-full rounded-md bg-gray-100 p-5 sm:max-w-md">
-                                      <h6 className="mb-1 block font-extrabold"></h6>
-                                      <form onSubmit={handleSubmit}>
-                                        <div className="mb-4">
-                                          <input
-                                            name="Product"
-                                            type="text"
-                                            key={product._id}
-                                            data-val={product._id}
-                                            value={product._id}
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-                                          />
-                                          <label
-                                            className="mb-1 block "
-                                            htmlFor="date"
-                                          >
-                                            Date début
-                                          </label>
-                                          <input
-                                            name="dateDebut"
-                                            type="date"
-                                            required=""
-                                            placeholder=""
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-                                          />
-                                        </div>
-
-                                        <div className="mb-4">
-                                          <label
-                                            className="mb-1 block"
-                                            htmlFor="date"
-                                          >
-                                            Date fin
-                                          </label>
-                                          <input
-                                            name="dateFin"
-                                            type="date"
-                                            required=""
-                                            placeholder=""
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-                                          />
-                                        </div>
-                                        <div className="mb-4">
-                                          <label
-                                            className="mb-1 block"
-                                            htmlFor="remise"
-                                          >
-                                            Remise
-                                          </label>
-                                          <input
-                                            name="remise"
-                                            type="Number"
-                                            required=""
-                                            placeholder=""
-                                            onChange={handleChange}
-                                            className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50 disabled:bg-gray-100"
-                                          />
-                                        </div>
-                                        <div className="mt-6">
-                                          <button
-                                            type="submit"
-                                            className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 font-semibold capitalize text-white transition hover:bg-blue-700 focus:border-blue-700 focus:outline-none focus:ring focus:ring-blue-200 active:bg-blue-700 disabled:opacity-25"
-                                          >
-                                            Enregistrer
-                                          </button>
-                                        </div>
-                                      </form>
-                                    </div>
-                                  ) : null}
-                                  <br></br>
-                                  <span className="mt-2 text-gray-500">
-                                    {product.prix} DT
-                                  </span>
-                                  <br></br>
-
-                                  <button
-                                    onClick={() =>
-                                      !updateProduct
-                                        ? setUpdateProduct(true) ||
-                                          setProductId(product)
-                                        : setUpdateProduct(false)
-                                    }
-                                    className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none"
-                                    type="button"
-                                  >
-                                    Edit
-                                  </button>
-
-                                  <button
-                                    className="focus:shadow-outline ml-8 rounded bg-red-500 py-2 px-4 font-bold text-white shadow hover:bg-red-500 focus:outline-none"
-                                    type="button"
-                                    onClick={open}
-                                  >
-                                    Supprimer
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            <Confirm
-                              open={confirm}
-                              onCancel={close}
-                              onConfirm={handleDelete}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
+                  ? productsData?.map(function (product, i) {
+                      return (
+                        <ProductList
+                          key={i}
+                          setIsSubmitting={setIsSubmitting}
+                          product={product}
+                        />
+                      )
+                    })
+                  : null}
               </div>
             )}
           </div>

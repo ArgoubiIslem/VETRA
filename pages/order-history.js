@@ -124,12 +124,12 @@ function OrderHistory() {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell>ID</TableCell>
-                          <TableCell>DATE</TableCell>
-                          <TableCell>TOTALE</TableCell>
-                          <TableCell>PAYÉ</TableCell>
-                          <TableCell>LIVRÉ</TableCell>
-                          <TableCell>ACTION</TableCell>
+                          <TableCell>Id</TableCell>
+                          <TableCell>Date</TableCell>
+                          <TableCell>Totale</TableCell>
+                          <TableCell>Payé</TableCell>
+                          <TableCell>Livré</TableCell>
+                          <TableCell>Action</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>

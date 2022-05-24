@@ -8,6 +8,7 @@ import Link from 'next/link'
 import Marque from '../components/Marque'
 import Filter from '../components/Filter'
 import Breadcrumb from '../components/BreadCrumb'
+import filterSearch from '../utils/filterSearch'
 
 function ProdHomme() {
   const [productsData, setProductsData] = useState(null)
@@ -37,6 +38,12 @@ function ProdHomme() {
       // make sure to catch any error
       .catch(console.error)
   }, [])
+  const filterResult = (catItem) => {
+    const result = productsData?.filter((curData) => {
+      return curData.sousCategorie === catItem
+    })
+    setProductsData(result)
+  }
   return (
     <div>
       <Headers />
@@ -52,11 +59,39 @@ function ProdHomme() {
             <div className=" flex justify-end">
               <div class="flex-inline w-1/2 space-y-0.5">
                 <div className="item order-first  h-60 ">
-                  <Marque />
-                </div>
+                  <div class=" absolute mb-6 flex h-64  max-w-xs flex-col justify-between   bg-white py-5 px-4 ">
+                    {' '}
+                    <fieldset>
+                      <span class="mb-1 p-2 font-semibold text-gray-800">
+                        CATÉGORIES
+                      </span>
+                      <br></br>
+                      <br></br>
 
-                <div className="item h-28">
-                  <Filter />
+                      <div class="mb-4 flex items-center">
+                        {productsData?.map(function (product, i) {
+                          console.log(productsData)
+                          return (
+                            <div class="mb-4 flex items-center">
+                              <input
+                                id="checkbox-1"
+                                aria-describedby="checkbox-1"
+                                type="checkbox"
+                                class="h-4 w-4 rounded border-yellow-500 bg-yellow-500 text-yellow-500 focus:ring-2 focus:ring-yellow-500 dark:border-gray-600 dark:bg-yellow-500 dark:ring-offset-yellow-500 dark:focus:ring-yellow-500"
+                              />
+                              <button
+                                onClick={() =>
+                                  filterResult(product.sousCategorie)
+                                }
+                              >
+                                {product.sousCategorie}
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </fieldset>
+                  </div>
                 </div>
               </div>
               <div className="mt-6  grid grid-cols-1  gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">

@@ -72,12 +72,12 @@ function Profile() {
             <List>
               <NextLink href="/profile" passHref>
                 <ListItem selected button component="a">
-                  <ListItemText primary="User Profile"></ListItemText>
+                  <ListItemText primary="Profile"></ListItemText>
                 </ListItem>
               </NextLink>
               <NextLink href="/order-history" passHref>
                 <ListItem button component="a">
-                  <ListItemText primary="Order History"></ListItemText>
+                  <ListItemText primary="Historique de commandes"></ListItemText>
                 </ListItem>
               </NextLink>
             </List>

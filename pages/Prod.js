@@ -38,6 +38,31 @@ function Prod() {
       // make sure to catch any error
       .catch(console.error)
   }, [])
+
+  const getProduct = async () => {
+    setIsLoading(true)
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/products/${router.query.sousCategorie}`,
+        {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form),
+        }
+      )
+      setTimeout(() => {
+        setIsLoading(false)
+        alert('Modification avec success')
+      }, 500)
+      console.log('Modifier !' + JSON.stringify(form))
+      // router.push('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div>
       <Headers />
@@ -51,22 +76,10 @@ function Prod() {
           <Breadcrumb />
           <div className="container mx-auto px-6">
             <div className=" flex justify-end space-x-0.5">
-              <div class="flex-inline w-1/2 space-y-0.5">
-                <div className="item order-first  h-60 ">
-                  <Marque />
-                </div>
-
-                <div className="item h-28">
-                  <Filter />
-                </div>
-              </div>
               <div className=" grid grid-cols-1  gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
                 {productsData
                   ?.filter((product) => {
-                    return product.categorie === 'Femme'
-                  })
-                  ?.filter((product) => {
-                    return product.sousCategorie
+                    return product.sousCategorie === product.sousCategorie
                   })
                   .map(function (product, i) {
                     console.log(productsData)
@@ -115,40 +128,6 @@ function Prod() {
                       </div>
                     )
                   })}
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <div className="mt-8 flex rounded-md">
-                <a
-                  href="#"
-                  className="ml-0 rounded-l border border-r-0 border-gray-200 bg-white py-2 px-4 leading-tight text-blue-700 hover:bg-blue-500 hover:text-white"
-                >
-                  <span>Previous</span>
-                </a>
-                <a
-                  href="#"
-                  className="border border-r-0 border-gray-200 bg-white py-2 px-4 leading-tight text-blue-700 hover:bg-blue-500 hover:text-white"
-                >
-                  <span>1</span>
-                </a>
-                <a
-                  href="#"
-                  className="border border-r-0 border-gray-200 bg-white py-2 px-4 leading-tight text-blue-700 hover:bg-blue-500 hover:text-white"
-                >
-                  <span>2</span>
-                </a>
-                <a
-                  href="#"
-                  className="border border-r-0 border-gray-200 bg-white py-2 px-4 leading-tight text-blue-700 hover:bg-blue-500 hover:text-white"
-                >
-                  <span>3</span>
-                </a>
-                <a
-                  href="#"
-                  className="rounded-r border border-gray-200 bg-white py-2 px-4 leading-tight text-blue-700 hover:bg-blue-500 hover:text-white"
-                >
-                  <span>Next</span>
-                </a>
               </div>
             </div>
           </div>

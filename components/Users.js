@@ -204,8 +204,11 @@ function Users() {
                                     </td>
 
                                     <td className="py-3 px-6 text-center">
-                                      <div className="flex items-center justify-center bg-gray-700">
-                                        {user.isAdmin}
+                                      <div
+                                        className="flex items-center justify-center 
+                                      "
+                                      >
+                                        {user.isAdmin ? `Admin` : 'Client'}
                                       </div>
                                     </td>
                                     <td className="py-3 px-6 text-center">
