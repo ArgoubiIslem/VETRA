@@ -9,27 +9,6 @@ function MeilleuresVentes() {
         </h1>
       </div>
       <div className="flex h-full w-full items-center justify-center py-24 px-4 sm:py-8">
-        <button
-          aria-label="slide backward"
-          className="absolute left-0 z-30 ml-10 cursor-pointer focus:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
-          id="prev"
-        >
-          <svg
-            class="h-20 w-20 text-black"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            {' '}
-            <path stroke="none" d="M0 0h24v24H0z" />{' '}
-            <polyline points="15 6 9 12 15 18" />
-          </svg>
-        </button>
         <div className="relative flex w-full items-center justify-center">
           <div className="mx-auto h-full w-full overflow-x-hidden overflow-y-hidden">
             <div
@@ -126,25 +105,6 @@ function MeilleuresVentes() {
             </div>
           </div>
         </div>
-        <button
-          aria-label="slide forward"
-          className="absolute right-0 z-30 mr-10 focus:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
-          id="next"
-        >
-          <svg
-            class="h-20 w-20 text-black"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
       </div>
     </div>
   )

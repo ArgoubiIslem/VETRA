@@ -290,7 +290,7 @@ function Headers() {
               </li>
 
               <li>
-                <Link href="/Carousels">
+                <Link href="/Promotion">
                   <a>Promotion</a>
                 </Link>
               </li>
