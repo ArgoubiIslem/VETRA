@@ -103,14 +103,6 @@ function Fournisseurs() {
             </svg>
             <span>Ajouter fournisseur</span>
           </button>
-          {/* </Link> */}
-
-          {/* <button
-            className="focus:shadow-outline ml-8 rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none  "
-            type="button"
-          >
-            Export
-          </button> */}
         </div>
         <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
           <div className="w-full lg:w-5/6">

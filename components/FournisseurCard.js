@@ -41,7 +41,10 @@ function FournisseurCard({ fournisseur }) {
   return (
     <>
       {updateFournisseur ? (
-        <EditFournisseur fournisseur={fournisseurId} />
+        <EditFournisseur
+          setUpdateFournisseur={setUpdateFournisseur}
+          fournisseur={fournisseurId}
+        />
       ) : (
         <tr className="border-b border-gray-200 hover:bg-gray-100">
           {isDeleting ? (

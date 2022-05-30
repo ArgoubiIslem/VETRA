@@ -10,7 +10,6 @@ function EvenementCard({ evenement }) {
   const [evenementId, setEvenementId] = useState()
   const close = () => setConfirm(false)
   const deleteEvenement = async () => {
-    // const id = router.query.id
     try {
       await fetch(`http://localhost:3000/api/evenements/${evenement?._id}`, {
         method: 'Delete',

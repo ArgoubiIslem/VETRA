@@ -38,7 +38,7 @@ function UserCard({ user }) {
   return (
     <>
       {updateUser ? (
-        <EditUser user={userId} />
+        <EditUser setUpdateUser={setUpdateUser} user={userId} />
       ) : (
         <tr className="border-b border-gray-200 hover:bg-gray-100">
           {isDeleting ? (

@@ -38,7 +38,7 @@ function PromoCard({ promo }) {
   return (
     <>
       {updatePromo ? (
-        <EditPromo promo={promoId} />
+        <EditPromo setUpdatePromo={setUpdatePromo} promo={promoId} />
       ) : (
         <tr className="border-b border-gray-200 hover:bg-gray-100">
           {isDeleting ? (

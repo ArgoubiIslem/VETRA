@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
-const EditProduct = ({ product }) => {
+const EditProduct = ({ product, setUpdateProduct }) => {
   console.log(product)
   const [form, setForm] = useState({
     nom: product?.nom,
@@ -67,13 +67,14 @@ const EditProduct = ({ product }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 pt-4">
-      <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
-        <div className="w-full lg:w-5/6">
-          <h3 className="mb-8 text-3xl font-medium text-gray-700">
-            Modifier Produits
-          </h3>
-          <div class="leading-loose">
+    <>
+      <div
+        onClick={() => setUpdateProduct(false)}
+        className="fixed bottom-0 left-0 right-0 top-0 bg-gray-500 bg-opacity-40 "
+      ></div>
+      <div className="fixed  top-8 z-50 mx-auto -my-32 flex w-full max-w-4xl items-center justify-center overflow-hidden font-sans   ">
+        <div className="w-full max-w-4xl lg:w-5/6">
+          <div className="leading-loose">
             {isLoading ? (
               <Loader />
             ) : (
@@ -81,6 +82,9 @@ const EditProduct = ({ product }) => {
                 class="m-4  rounded bg-white p-20 shadow-xl"
                 onSubmit={handleSubmit}
               >
+                <h3 className="mb-8 text-3xl font-medium text-gray-700">
+                  Modifier Produits
+                </h3>
                 <div class="">
                   <label class="text-gray-00 block text-sm" for="cus_name">
                     Titre de produit
@@ -222,7 +226,7 @@ const EditProduct = ({ product }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 EditProduct.getInitialProps = async ({ query: { id } }) => {

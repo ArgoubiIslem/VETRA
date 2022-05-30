@@ -91,7 +91,7 @@ function ProductList({ product }) {
   return (
     <>
       {updateProduct ? (
-        <EditProduct product={productId} />
+        <EditProduct setUpdateProduct={setUpdateProduct} product={productId} />
       ) : (
         <div className="mt-10 w-full">
           <div className=" mx-auto  w-full max-w-sm grid-cols-4 gap-10 ">

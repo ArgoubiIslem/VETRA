@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
 
-const EditUser = ({ user }) => {
+const EditUser = ({ user, setUpdateUser }) => {
   console.log(user)
   const [form, setForm] = useState({
     nomP: user?.nomP,
@@ -61,13 +61,14 @@ const EditUser = ({ user }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 pt-4">
-      <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
-        <div className="w-full lg:w-5/6">
-          <h3 className="mb-8 text-3xl font-medium text-gray-700">
-            Modifier utilisateur
-          </h3>
-          <div class="leading-loose">
+    <>
+      <div
+        onClick={() => setUpdateUser(false)}
+        className="fixed bottom-0 left-0 right-0 top-0 bg-gray-500 bg-opacity-40 "
+      ></div>
+      <div className="fixed top-8 z-50 mx-auto -my-32 flex w-full max-w-4xl items-center justify-center overflow-hidden font-sans   ">
+        <div className="w-full max-w-4xl lg:w-5/6">
+          <div className="leading-loose">
             {isLoading ? (
               <Loader />
             ) : (
@@ -75,6 +76,9 @@ const EditUser = ({ user }) => {
                 class="m-4  rounded bg-white p-20 shadow-xl"
                 onSubmit={handleSubmit}
               >
+                <h3 className="mb-8 text-3xl font-medium text-gray-700">
+                  Modifier utilisateur
+                </h3>
                 <div class="">
                   <label class="text-gray-00 block text-sm" for="cus_name">
                     Utilisateur
@@ -135,7 +139,7 @@ const EditUser = ({ user }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 EditUser.getInitialProps = async ({ query: { id } }) => {
