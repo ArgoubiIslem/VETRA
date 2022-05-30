@@ -3,40 +3,45 @@ import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 import { Confirm, Button, Loader } from 'semantic-ui-react'
+
+import AbonneeCard from './AbonneeCard'
 function Abonnees() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [confirm, setConfirm] = useState(false)
+  // const [confirm, setConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
   const [abonneesData, setAbonneesData] = useState(null)
-  const [abonneetId, setAbonneetId] = useState()
-  useEffect(() => {
-    if (isDeleting) {
-      deleteContact()
-    }
-  }, [isDeleting])
 
-  const open = () => setConfirm(true)
+  const [abonneeId, setAbonneeId] = useState()
+  const [frid, setFrid] = useState()
 
-  const close = () => setConfirm(false)
+  // useEffect(() => {
+  //   if (isDeleting) {
+  //     deleteFournisseur()
+  //   }
+  // }, [isDeleting])
 
-  const deleteContact = async () => {
-    const id = router.query.id
-    try {
-      const deleted = await fetch(`http://localhost:3000/api/abonnees/${id}`, {
-        method: 'Delete',
-      })
+  // const open = () => setConfirm(true)
 
-      // router.push("/");
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const close = () => setConfirm(false)
 
-  const handleDelete = async () => {
-    setIsDeleting(true)
-    close()
-  }
+  // const deleteFournisseur = async () => {
+  //   // const id = router.query.id
+  //   try {
+  //     await fetch(`http://localhost:3000/api/fournisseurs/${frid}`, {
+  //       method: 'Delete',
+  //     })
+
+  //     // router.push("/");
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // const handleDelete = async () => {
+  //   setIsDeleting(true)
+  //   close()
+  // }
 
   useEffect(() => {
     async function getUser() {
@@ -66,10 +71,18 @@ function Abonnees() {
   return (
     <div className="container mx-auto px-4 py-16 pt-4 ">
       <div className="container">
+        <div className="absolute top-40 right-4 ">
+          {/* <Link
+          href="/NewProduct"
+          className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
+        > */}
+
+          {/* </Link> */}
+        </div>
         <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
           <div className="w-full lg:w-5/6">
             <h3 className="mb-8 text-3xl font-medium text-gray-700">
-              Les Abonnées
+              Les Abonnees
             </h3>
             <div
               class="mx-auto flex max-w-md items-center rounded-lg bg-white "
@@ -106,84 +119,25 @@ function Abonnees() {
                 </svg>
               </button>
             </div>
-
             <div className="mt-10">
               <div className="my-6 rounded bg-white shadow-md">
                 <table className="w-full rounded shadow-lg">
                   <thead>
                     <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
                       <th className="py-3 px-6 text-left">ID</th>
+
                       <th className="py-3 px-6 text-center">Email</th>
+
                       <th className="py-3 px-6 text-center">Actions</th>
                     </tr>
                   </thead>
 
                   <tbody className="text-sm font-light text-gray-600">
                     {abonneesData
-                      ?.filter((abonnee) => {
-                        if (searchTerm == '') {
-                          return abonnee
-                        } else if (
-                          abonnee.email
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        ) {
-                          return abonnee
-                        }
-                      })
-                      .map(function (abonnee, i) {
-                        console.log(abonneesData)
-                        return (
-                          <tr className="border-b border-gray-200 hover:bg-gray-100">
-                            {isDeleting ? (
-                              <Loader active />
-                            ) : (
-                              <>
-                                <td className="whitespace-nowrap py-3 px-6 text-left">
-                                  <div className="flex items-center">
-                                    <div className="mr-2"></div>
-                                    <span className="font-medium">#</span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="flex items-center justify-center">
-                                    {abonnee.email}
-                                  </div>
-                                </td>
-
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500"></div>
-
-                                    <button onClick={open}>
-                                      <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          stroke="currentColor"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                          />
-                                        </svg>
-                                      </div>
-                                    </button>
-                                  </div>
-                                </td>
-                              </>
-                            )}
-                            <Confirm
-                              open={confirm}
-                              onCancel={close}
-                              onConfirm={handleDelete}
-                            />
-                          </tr>
-                        )
-                      })}
+                      ? abonneesData?.map(function (abonnee, i) {
+                          return <AbonneeCard key={i} abonnee={abonnee} />
+                        })
+                      : null}
                   </tbody>
                 </table>
               </div>
@@ -198,7 +152,7 @@ Abonnees.getInitialProps = async ({ query: { id } }) => {
   const res = await fetch(`http://localhost:3000/api/abonnees/${id}`)
   const { data } = await res.json()
 
-  return { Abonnees: data }
+  return { abonnees: data }
 }
 
 export default Abonnees

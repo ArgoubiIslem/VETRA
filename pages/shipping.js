@@ -35,20 +35,29 @@ export default function Shipping() {
     }
     setValue('fullName', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
+    setValue('tel', shippingAddress.tel)
     setValue('city', shippingAddress.city)
     setValue('postalCode', shippingAddress.postalCode)
     setValue('country', shippingAddress.country)
   }, [])
 
   const classes = useStyles()
-  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+  const submitHandler = ({
+    fullName,
+    address,
+    tel,
+    city,
+    postalCode,
+    country,
+  }) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullName, address, city, postalCode, country, location },
+      payload: { fullName, address, tel, city, postalCode, country, location },
     })
     Cookies.set('shippingAddress', {
       fullName,
       address,
+      tel,
       city,
       postalCode,
       country,
@@ -60,16 +69,18 @@ export default function Shipping() {
   const chooseLocationHandler = () => {
     const fullName = getValues('fullName')
     const address = getValues('address')
+    const tel = getValues('tel')
     const city = getValues('city')
     const postalCode = getValues('postalCode')
     const country = getValues('country')
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullName, address, city, postalCode, country },
+      payload: { fullName, address, tel, city, postalCode, country },
     })
     Cookies.set('shippingAddress', {
       fullName,
       address,
+      tel,
       city,
       postalCode,
       country,
@@ -129,6 +140,34 @@ export default function Shipping() {
                   id="address"
                   label="Addresse"
                   error={Boolean(errors.address)}
+                  helperText={
+                    errors.address
+                      ? errors.address.type === 'minLength'
+                        ? "La longueur de l'adresse est supérieure à 1"
+                        : 'Addresse est obligatoire'
+                      : ''
+                  }
+                  {...field}
+                ></TextField>
+              )}
+            ></Controller>
+          </ListItem>
+          <ListItem>
+            <Controller
+              name="tel"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                minLength: 2,
+              }}
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="tel"
+                  label="Tel"
+                  error={Boolean(errors.tel)}
                   helperText={
                     errors.address
                       ? errors.address.type === 'minLength'
@@ -234,7 +273,7 @@ export default function Shipping() {
               Choisissez sur map
             </Button>
             <Typography>
-              {location.lat && `${location.lat}, ${location.lat}`}
+              {location?.lat && `${location?.lat}, ${location?.lat}`}
             </Typography>
           </ListItem>
           <ListItem>

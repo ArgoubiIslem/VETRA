@@ -4,10 +4,13 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import fetch from 'isomorphic-unfetch'
 import Loader from '../../components/Loader'
+
 const EditPromo = ({ promo }) => {
   console.log(promo)
   const [form, setForm] = useState({
-    Product: promo?.Product,
+    nom: promo?.nom,
+
+    prix: promo?.prix,
     dateDebut: promo?.dateDebut,
     dateFin: promo?.dateFin,
     remise: promo?.remise,
@@ -16,7 +19,6 @@ const EditPromo = ({ promo }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const router = useRouter()
-
   useEffect(() => {
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')
@@ -30,14 +32,17 @@ const EditPromo = ({ promo }) => {
   const updatePromo = async () => {
     setIsLoading(true)
     try {
-      const res = await fetch(`http://localhost:3000/api/promos/${promo?.id}`, {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      })
+      const res = await fetch(
+        `http://localhost:3000/api/Promos/${promo?._id}`,
+        {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form),
+        }
+      )
       setTimeout(() => {
         setIsLoading(false)
         alert('Modification avec success')
@@ -65,7 +70,7 @@ const EditPromo = ({ promo }) => {
       <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
         <div className="w-full lg:w-5/6">
           <h3 className="mb-8 text-3xl font-medium text-gray-700">
-            Modifier Categorie
+            Modifier promo
           </h3>
           <div class="leading-loose">
             {isLoading ? (
@@ -76,59 +81,63 @@ const EditPromo = ({ promo }) => {
                 onSubmit={handleSubmit}
               >
                 <div class="">
-                  <label class="text-gray-00 block text-sm" for="cus_name">
-                    Promo
-                  </label>
+                  <label class="text-gray-00 block text-sm">Promo</label>
                   <input
                     class="w-full rounded bg-gray-200 px-5 py-1 text-gray-700"
                     id="cus_name"
-                    name="Product"
-                    value={form.Product}
+                    name="nom"
+                    value={form.nom}
                     type="text"
-                    required=""
                     aria-label="Name"
                     onChange={handleChange}
                   />
                 </div>
+
                 <div class="mt-2">
-                  <label class=" block text-sm text-gray-600" for="cus_email">
-                    Date Debut
-                  </label>
+                  <label class=" block text-sm text-gray-600">prix</label>
+                  <input
+                    class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                    id="cus_email"
+                    name="email"
+                    type="text"
+                    value={form.prix}
+                    aria-label="Email"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div class="mt-2">
+                  <label class=" block text-sm text-gray-600">Date Debut</label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
                     name="dateDebut"
-                    type="date"
+                    type="text"
                     value={form.dateDebut}
-                    required=""
+                    aria-label="Email"
                     onChange={handleChange}
                   />
                 </div>
                 <div class="mt-2">
-                  <label class=" block text-sm text-gray-600" for="cus_email">
-                    Date Fin
-                  </label>
+                  <label class=" block text-sm text-gray-600">Date Fin</label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
                     name="dateFin"
-                    type="date"
+                    type="text"
                     value={form.dateFin}
-                    required=""
+                    aria-label="Email"
                     onChange={handleChange}
                   />
                 </div>
                 <div class="mt-2">
-                  <label class=" block text-sm text-gray-600" for="cus_email">
-                    Remise
-                  </label>
+                  <label class=" block text-sm text-gray-600">Remise</label>
                   <input
                     class="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_email"
                     name="remise"
                     type="Number"
                     value={form.remise}
-                    required=""
+                    aria-label="Email"
                     onChange={handleChange}
                   />
                 </div>
@@ -150,7 +159,7 @@ const EditPromo = ({ promo }) => {
   )
 }
 EditPromo.getInitialProps = async ({ query: { id } }) => {
-  const res = await fetch(`http://localhost:3000/api/promos/${id}`)
+  const res = await fetch(`http://localhost:3000/api/Promos/${id}`)
   const { data } = await res.json()
 
   return { promo: data }

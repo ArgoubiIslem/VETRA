@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Confirm, Loader } from 'semantic-ui-react'
-import EditFournisseur from '/pages/[id]/EditFournisseur'
-function FournisseurCard({ fournisseur }) {
+import EditPromo from '/pages/[id]/EditPromo'
+function PromoCard({ promo }) {
+  let prix = 0
   const [confirm, setConfirm] = useState(false)
+  const [updatePromo, setUpdatePromo] = useState(false)
   const [showConf, setShowConf] = useState(false)
-  const [updateFournisseurs, setUpdateFournisseurs] = useState(false)
+  const [updatePromos, setUpdatePromos] = useState(false)
   const open = () => setConfirm(true)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [updateFournisseur, setUpdateFournisseur] = useState(false)
-  const [fournisseurId, setFournisseurId] = useState()
-
+  const [promoId, setPromoId] = useState()
   const close = () => setConfirm(false)
-  const deleteFournisseur = async () => {
+  const deletePromo = async () => {
     // const id = router.query.id
     try {
-      await fetch(
-        `http://localhost:3000/api/fournisseurs/${fournisseur?._id}`,
-        {
-          method: 'Delete',
-        }
-      )
+      await fetch(`http://localhost:3000/api/Promos/${promo?._id}`, {
+        method: 'Delete',
+      })
       window.location.reload(true)
       // router.push("/");
     } catch (error) {
@@ -34,14 +31,14 @@ function FournisseurCard({ fournisseur }) {
 
   useEffect(() => {
     if (isDeleting) {
-      deleteFournisseur()
+      deletePromo()
     }
   }, [isDeleting])
 
   return (
     <>
-      {updateFournisseur ? (
-        <EditFournisseur fournisseur={fournisseurId} />
+      {updatePromo ? (
+        <EditPromo promo={promoId} />
       ) : (
         <tr className="border-b border-gray-200 hover:bg-gray-100">
           {isDeleting ? (
@@ -51,44 +48,49 @@ function FournisseurCard({ fournisseur }) {
               <td className="whitespace-nowrap py-3 px-6 text-left">
                 <div className="flex items-center">
                   <div className="mr-2"></div>
-                  <span className="font-medium">#</span>
+                  <span className="font-medium">{promo.nom}</span>
                 </div>
               </td>
               <td className="py-3 px-6 text-left">
                 <div className="flex items-center">
                   <div className="mr-2"></div>
-                  <span>
-                    {fournisseur.nom} {fournisseur.Prenom}
-                  </span>
+                  <span>{promo.prix} DT</span>
+                </div>
+              </td>
+              <td className="py-3 px-6 text-left">
+                <div className="flex items-center">
+                  <div className="mr-2"></div>
+                  <span>{(prix = (promo.remise * promo.prix) / 100)} DT</span>
+                </div>
+              </td>
+              <td className="py-3 px-6 text-left">
+                <div className="flex items-center">
+                  <div className="mr-2"></div>
+                  <span>{promo.dateDebut}</span>
                 </div>
               </td>
               <td className="py-3 px-6 text-center">
                 <div className="flex items-center justify-center">
-                  {fournisseur.email}
+                  {promo.dateFin}
                 </div>
               </td>
               <td className="py-3 px-6 text-center">
                 <div className="item-center flex justify-center">
                   <span className="rounded-full bg-green-200 py-1 px-3 text-xs text-green-600">
-                    {fournisseur.tel}
+                    {promo.remise}
                   </span>
                 </div>
               </td>
-              <td className="py-3 px-6 text-center">
-                <div className="item-center flex justify-center">
-                  {fournisseur.adresse}
-                </div>
-              </td>
+
               <td className="py-3 px-6 text-center">
                 <div className="item-center flex justify-center">
                   <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500"></div>
 
                   <button
                     onClick={() =>
-                      !updateFournisseurs
-                        ? setUpdateFournisseur(true) ||
-                          setFournisseurId(fournisseur)
-                        : setUpdateFournisseur(false)
+                      !updatePromos
+                        ? setUpdatePromo(true) || setPromoId(promo)
+                        : setUpdatePromo(false)
                     }
                   >
                     <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
@@ -130,25 +132,6 @@ function FournisseurCard({ fournisseur }) {
             </>
           )}
           {showConf ? (
-            // <div className="fixed top-0 bottom-0 left-0 right-0 mx-auto h-full w-full items-center justify-center bg-gray-600 bg-opacity-70 ">
-            //   <div className="mx-auto grid max-w-4xl items-center gap-10 bg-white py-16 px-8">
-            //     <p>Do you want to delete ?</p>
-            //     <div className="flex justify-between">
-            //       <button
-            //         onClick={deleteFournisseur}
-            //         className="bg-blue-600 bg-opacity-70 px-6 py-2 text-white "
-            //       >
-            //         Confirm
-            //       </button>
-            //       <button
-            //         onClick={() => setShowConf(false)}
-            //         className="bg-blue-600 bg-opacity-70 px-6 py-2 text-white "
-            //       >
-            //         Cancel
-            //       </button>
-            //     </div>
-            //   </div>
-            // </div>
             <div class="fixed left-0 bottom-0 flex h-full w-full items-center justify-center bg-gray-100">
               <div class="w-1/2 rounded-lg bg-white">
                 <div class="flex flex-col items-start p-4">
@@ -169,7 +152,7 @@ function FournisseurCard({ fournisseur }) {
                   <hr />
                   <div class="ml-auto">
                     <button
-                      onClick={deleteFournisseur}
+                      onClick={deletePromo}
                       class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                     >
                       Confirmer
@@ -191,4 +174,4 @@ function FournisseurCard({ fournisseur }) {
   )
 }
 
-export default FournisseurCard
+export default PromoCard

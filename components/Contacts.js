@@ -4,40 +4,44 @@ import fetch from 'isomorphic-unfetch'
 import { useRouter } from 'next/router'
 import { Confirm, Button, Loader } from 'semantic-ui-react'
 
+import ContactCard from './ContactCard'
 function Contacts() {
   const [searchTerm, setSearchTerm] = useState('')
-  const [confirm, setConfirm] = useState(false)
+  // const [confirm, setConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const router = useRouter()
   const [contactsData, setContactsData] = useState(null)
+
   const [contactId, setContactId] = useState()
-  useEffect(() => {
-    if (isDeleting) {
-      deleteContact()
-    }
-  }, [isDeleting])
+  const [frid, setFrid] = useState()
 
-  const open = () => setConfirm(true)
+  // useEffect(() => {
+  //   if (isDeleting) {
+  //     deleteFournisseur()
+  //   }
+  // }, [isDeleting])
 
-  const close = () => setConfirm(false)
+  // const open = () => setConfirm(true)
 
-  const deleteContact = async () => {
-    const id = router.query.id
-    try {
-      const deleted = await fetch(`http://localhost:3000/api/contacts/${id}`, {
-        method: 'Delete',
-      })
+  // const close = () => setConfirm(false)
 
-      // router.push("/");
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const deleteFournisseur = async () => {
+  //   // const id = router.query.id
+  //   try {
+  //     await fetch(`http://localhost:3000/api/fournisseurs/${frid}`, {
+  //       method: 'Delete',
+  //     })
 
-  const handleDelete = async () => {
-    setIsDeleting(true)
-    close()
-  }
+  //     // router.push("/");
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // const handleDelete = async () => {
+  //   setIsDeleting(true)
+  //   close()
+  // }
 
   useEffect(() => {
     async function getUser() {
@@ -67,6 +71,14 @@ function Contacts() {
   return (
     <div className="container mx-auto px-4 py-16 pt-4 ">
       <div className="container">
+        <div className="absolute top-40 right-4 ">
+          {/* <Link
+          href="/NewProduct"
+          className="mt-4 flex items-center border-l-4 px-6 py-2 duration-200"
+        > */}
+
+          {/* </Link> */}
+        </div>
         <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
           <div className="w-full lg:w-5/6">
             <h3 className="mb-8 text-3xl font-medium text-gray-700">
@@ -117,93 +129,17 @@ function Contacts() {
                       <th className="py-3 px-6 text-left">Nom</th>
                       <th className="py-3 px-6 text-center">Email</th>
                       <th className="py-3 px-6 text-center">Tel</th>
-                      <th className="py-3 px-6 text-center">Messages</th>
+                      <th className="py-3 px-6 text-center">Message</th>
                       <th className="py-3 px-6 text-center">Actions</th>
                     </tr>
                   </thead>
 
                   <tbody className="text-sm font-light text-gray-600">
                     {contactsData
-                      ?.filter((contact) => {
-                        if (searchTerm == '') {
-                          return contact
-                        } else if (
-                          contact.nomP
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        ) {
-                          return contact
-                        }
-                      })
-                      .map(function (contact, i) {
-                        console.log(contactsData)
-                        return (
-                          <tr className="border-b border-gray-200 hover:bg-gray-100">
-                            {isDeleting ? (
-                              <Loader active />
-                            ) : (
-                              <>
-                                <td className="whitespace-nowrap py-3 px-6 text-left">
-                                  <div className="flex items-center">
-                                    <div className="mr-2"></div>
-                                    <span className="font-medium">#</span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-left">
-                                  <div className="flex items-center">
-                                    <span>{contact.nomP}</span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="flex items-center justify-center">
-                                    {contact.email}
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    <span className="rounded-full bg-green-200 py-1 px-3 text-xs text-green-600">
-                                      {contact.tel}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    {contact.msg}
-                                  </div>
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                  <div className="item-center flex justify-center">
-                                    <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500"></div>
-
-                                    <button onClick={open}>
-                                      <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          stroke="currentColor"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                          />
-                                        </svg>
-                                      </div>
-                                    </button>
-                                  </div>
-                                </td>
-                              </>
-                            )}
-                            <Confirm
-                              open={confirm}
-                              onCancel={close}
-                              onConfirm={handleDelete}
-                            />
-                          </tr>
-                        )
-                      })}
+                      ? contactsData?.map(function (contact, i) {
+                          return <ContactCard key={i} contact={contact} />
+                        })
+                      : null}
                   </tbody>
                 </table>
               </div>

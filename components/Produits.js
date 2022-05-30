@@ -17,17 +17,13 @@ function Produits() {
   const [confirm, setConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [promosData, setPromosData] = useState(null)
-  const [form, setForm] = useState({
-    Product: '',
-    dateDebut: '',
-    dateFin: '',
-    remise: 0,
-  })
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const router = useRouter()
   // Add Promo
+
   useEffect(() => {
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')

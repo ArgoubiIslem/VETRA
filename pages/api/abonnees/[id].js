@@ -36,7 +36,7 @@ export default async (req, res) => {
       break
     case 'DELETE':
       try {
-        const deleteAbonnee = await Contact.deleteOne({ _id: id })
+        const deleteAbonnee = await Abonnee.deleteOne({ _id: id })
         if (!deleteAbonnee) {
           return res.status(400).json({ success: false })
         }

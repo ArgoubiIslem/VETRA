@@ -135,7 +135,7 @@ function Headers() {
         <nav className="flex w-screen justify-between bg-white text-black">
           <img
             className="font-heading mx-auto hidden h-[150px]  w-[300px] px-4 font-semibold md:flex"
-            src="Logo2.jpg"
+            src="/Logo2.jpg"
           />
           <div className="flex w-full items-center px-5 py-6 xl:px-12">
             <a className="font-heading text-3xl font-bold" href="#"></a>

@@ -5,7 +5,8 @@ import { useRouter } from 'next/router'
 import { Confirm, Button, Loader } from 'semantic-ui-react'
 
 import EditOrder from '/pages/[id]/EditOrder'
-function Orders() {
+function Orders({ order }) {
+  const [showConf, setShowConf] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [confirm, setConfirm] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -15,32 +16,22 @@ function Orders() {
   const [updateOrder, setUpdateOrder] = useState(false)
 
   const [orderId, setOrderId] = useState()
-  useEffect(() => {
-    if (isDeleting) {
-      deleteOrder()
-    }
-  }, [isDeleting])
 
   const open = () => setConfirm(true)
 
   const close = () => setConfirm(false)
 
   const deleteOrder = async () => {
-    const id = router.query.id
+    // const id = router.query.id
     try {
-      const deleted = await fetch(`http://localhost:3000/api/orders/${id}`, {
+      await fetch(`http://localhost:3000/api/orders/${order?._id}`, {
         method: 'Delete',
       })
-
+      window.location.reload(true)
       // router.push("/");
     } catch (error) {
       console.log(error)
     }
-  }
-
-  const handleDelete = async () => {
-    setIsDeleting(true)
-    close()
   }
 
   useEffect(() => {
@@ -79,12 +70,12 @@ function Orders() {
 
           {/* </Link> */}
 
-          <button
+          {/* <button
             className="focus:shadow-outline ml-8 rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none  "
             type="button"
           >
             Export
-          </button>
+          </button> */}
         </div>
         <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
           <div className="w-full lg:w-5/6">
@@ -174,7 +165,9 @@ function Orders() {
                                   </td>
                                   <td className="py-3 px-6 text-left">
                                     <div className="flex items-center justify-center">
-                                      <span>{order.user}</span>
+                                      <span>
+                                        {order.shippingAddress.fullName}
+                                      </span>
                                     </div>
                                   </td>
                                   <td className="py-3 px-6 text-left">
@@ -205,27 +198,7 @@ function Orders() {
                                   </td>
                                   <td className="py-3 px-6 text-center">
                                     <div className="item-center flex justify-center">
-                                      <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          stroke="currentColor"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                          />
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                          />
-                                        </svg>
-                                      </div>
+                                      <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500"></div>
 
                                       <button
                                         onClick={() =>
@@ -252,9 +225,10 @@ function Orders() {
                                         </div>
                                       </button>
 
-                                      <button onClick={open}>
+                                      <button>
                                         <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
                                           <svg
+                                            onClick={() => setShowConf(true)}
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
@@ -273,11 +247,6 @@ function Orders() {
                                   </td>
                                 </>
                               )}
-                              <Confirm
-                                open={confirm}
-                                onCancel={close}
-                                onConfirm={handleDelete}
-                              />
                             </tr>
                           )
                         })}
@@ -289,6 +258,62 @@ function Orders() {
           </div>
         </div>
       </div>
+      {showConf ? (
+        // <div className="fixed top-0 bottom-0 left-0 right-0 mx-auto h-full w-full items-center justify-center bg-gray-600 bg-opacity-70 ">
+        //   <div className="mx-auto grid max-w-4xl items-center gap-10 bg-white py-16 px-8">
+        //     <p>Do you want to delete ?</p>
+        //     <div className="flex justify-between">
+        //       <button
+        //         onClick={deleteFournisseur}
+        //         className="bg-blue-600 bg-opacity-70 px-6 py-2 text-white "
+        //       >
+        //         Confirm
+        //       </button>
+        //       <button
+        //         onClick={() => setShowConf(false)}
+        //         className="bg-blue-600 bg-opacity-70 px-6 py-2 text-white "
+        //       >
+        //         Cancel
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
+        <div class="fixed left-0 bottom-0 flex h-full w-full items-center justify-center bg-gray-100">
+          <div class="w-1/2 rounded-lg bg-white">
+            <div class="flex flex-col items-start p-4">
+              <div class="flex w-full items-center">
+                <div></div>
+
+                <svg
+                  onClick={() => setShowConf(false)}
+                  class="ml-auto h-6 w-6 cursor-pointer fill-current text-gray-700"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 18 18"
+                >
+                  <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z" />
+                </svg>
+              </div>
+              <hr />
+              <div class="">Voulez vous supprimer ?</div>
+              <hr />
+              <div class="ml-auto">
+                <button
+                  onClick={deleteOrder}
+                  class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                >
+                  Confirmer
+                </button>
+                <button
+                  onClick={() => setShowConf(false)}
+                  class="rounded border border-blue-500 bg-transparent py-2 px-4 font-semibold text-blue-700 hover:border-transparent hover:bg-gray-500 hover:text-white"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

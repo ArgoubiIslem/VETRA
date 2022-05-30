@@ -7,6 +7,7 @@ import Loader from './Loader'
 import ListFemme from './ListFemme'
 import ListHomme from './ListHomme'
 import ListEnfant from './ListEnfant'
+import { DescriptionsContext } from 'antd/lib/descriptions'
 const NewProduct = () => {
   const [productsData, setProductsData] = useState(null)
   const [fournisseursData, setFournisseursData] = useState(null)
@@ -135,7 +136,230 @@ const NewProduct = () => {
                 className="m-4  rounded bg-white p-20 shadow-xl"
                 onSubmit={handleSubmit}
               >
-                <div className="">
+                <table>
+                  <tr>
+                    <td>
+                      <label>Titre de produit</label>
+                      <input
+                        className=" w-full rounded border bg-white px-5 py-1 text-gray-700"
+                        id="cus_name"
+                        name="nom"
+                        type="text"
+                        required=""
+                        placeholder="titre de produit"
+                        aria-label="Name"
+                        onChange={handleChange}
+                      />
+                    </td>
+                    <td>
+                      <label>Description</label>
+                      <input
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                        id="cus_email"
+                        name="description"
+                        type="text"
+                        placeholder="description"
+                        aria-label="Email"
+                        required
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {' '}
+                      <label>Fournisseur</label>
+                      <select
+                        onChange={handleChange}
+                        name="fournisseur"
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                      >
+                        <option placeholder="select"></option>
+                        {fournisseursData?.map(function (fournisseur, i) {
+                          console.log(fournisseursData)
+                          return (
+                            <option
+                              key={fournisseur._id}
+                              value={fournisseur.nom}
+                              data-val={fournisseur.nom}
+                            >
+                              {fournisseur.nom}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    </td>
+                    <td>
+                      <label>Statut</label>
+                      <select
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                        id="cus_name"
+                        name="statut"
+                        aria-label="Name"
+                        onChange={handleChange}
+                      >
+                        <option> Nouvelle collection</option>
+                        <option> Vieille collection</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Prix</label>
+                      <input
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                        id="cus_email"
+                        name="prix"
+                        type="number"
+                        required
+                        placeholder="20 DT"
+                        aria-label="Email"
+                        onChange={handleChange}
+                      />
+                    </td>
+                    <td>
+                      <label>Compter en stock</label>
+                      <input
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                        id="cus_email"
+                        name="countInStock"
+                        type="number"
+                        placeholder="compter en stock"
+                        aria-label="Email"
+                        required
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Categorie</label>
+
+                      <select
+                        onChange={handleChange}
+                        name="categorie"
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                      >
+                        <option placeholder="select"></option>
+                        {productsData?.map(function (product, i) {
+                          console.log(productsData)
+                          return (
+                            <option
+                              key={i}
+                              value={product.categorie}
+                              data-val={product.categorie}
+                            >
+                              {product.categorie}
+                            </option>
+                          )
+                        })}
+                      </select>
+
+                      <input
+                        list="browsers"
+                        name="categorie"
+                        onChange={handleChange}
+                        placeholder="Autre catégorie"
+                        class="w-full appearance-none border bg-white px-4 text-gray-800 outline-none"
+                      />
+                    </td>
+                    <td>
+                      <label>Sous Categorie</label>
+
+                      <select
+                        onChange={handleChange}
+                        name="sousCategorie"
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                      >
+                        <option placeholder="select"></option>
+                        {productsData?.map(function (product, i) {
+                          console.log(productsData)
+                          return (
+                            <option
+                              key={product._id}
+                              value={product.sousCategorie}
+                              data-val={product.sousCategorie}
+                            >
+                              {product.sousCategorie}
+                            </option>
+                          )
+                        })}
+                      </select>
+
+                      <input
+                        list="browsers"
+                        name="sousCategorie"
+                        onChange={handleChange}
+                        placeholder="Autre catégorie"
+                        class="w-full appearance-none border bg-white px-4 text-gray-800 outline-none"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Marque</label>
+
+                      <select
+                        onChange={handleChange}
+                        name="marque"
+                        className="w-full rounded border bg-white px-2 py-2 text-gray-700"
+                      >
+                        <option placeholder="select"></option>
+                        {productsData?.map(function (product, i) {
+                          console.log(productsData)
+                          return (
+                            <option
+                              key={product._id}
+                              value={product.marque}
+                              data-val={product.marque}
+                            >
+                              {product.marque}
+                            </option>
+                          )
+                        })}
+                      </select>
+
+                      <input
+                        list="browsers"
+                        name="marque"
+                        onChange={handleChange}
+                        placeholder="Autre catégorie"
+                        class="w-full appearance-none border bg-white px-4 text-gray-800 outline-none"
+                      />
+                    </td>
+                    <td>
+                      <label>Image de produit</label>
+                      <input
+                        className="w-full rounded border bg-white px-5 py-4 text-gray-700"
+                        id="cus_email"
+                        name="image"
+                        type="file"
+                        required=""
+                        aria-label="Email"
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button
+                        className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none"
+                        type="submit"
+                      >
+                        Ajouter un produit
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="focus:shadow-outline rounded bg-red-600 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none"
+                        type="reset"
+                      >
+                        Annuler
+                      </button>
+                    </td>
+                  </tr>
+
+                  {/* <div className="">
                   <label className="text-gray-00 block text-sm" for="cus_name">
                     Titre de produit
                   </label>
@@ -278,9 +502,9 @@ const NewProduct = () => {
                     placeholder="Autre catégorie"
                     class="w-full appearance-none bg-gray-200 px-4 text-gray-800 outline-none"
                   />
-                </div>
+                </div> */}
 
-                {/* <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
+                  {/* <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
                   <label className=" text-sm text-gray-600" for="cus_email">
                     Fournisseur
                   </label>
@@ -306,7 +530,7 @@ const NewProduct = () => {
                   </select>
                 </div> */}
 
-                <div class="group -mt-9 ml-2 inline-block h-9">
+                  {/* <div class="group -mt-9 ml-2 inline-block h-9">
                   <div class="mx-auto max-w-md">
                     <div class="relative">
                       <div class="flex h-10 items-center rounded border border-gray-200 bg-gray-200"></div>
@@ -314,11 +538,21 @@ const NewProduct = () => {
                   </div>
                 </div>
 
-                <div className="">
+                <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
                   <label className="block text-sm text-gray-600" for="cus_name">
                     Statut
                   </label>
-                  <input
+                  <select
+                    className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
+                    id="cus_name"
+                    name="statut"
+                    aria-label="Name"
+                    onChange={handleChange}
+                  >
+                    <option> Nouvelle collection</option>
+                    <option> Vieille collection</option>
+                  </select> */}
+                  {/* <input
                     className="w-full rounded bg-gray-200 px-2 py-2 text-gray-700"
                     id="cus_name"
                     name="statut"
@@ -327,8 +561,8 @@ const NewProduct = () => {
                     aria-label="Name"
                     required
                     onChange={handleChange}
-                  />
-                </div>
+                  /> */}
+                  {/* </div>
 
                 <div className="-mx-1 mt-2 inline-block w-1/2 pl-1">
                   <label className=" text-sm text-gray-600" for="cus_email">
@@ -404,7 +638,8 @@ const NewProduct = () => {
                   >
                     Ajouter un produit
                   </button>
-                </div>
+                </div> */}
+                </table>
               </form>
             )}
           </div>

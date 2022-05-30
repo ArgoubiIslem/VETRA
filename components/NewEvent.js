@@ -7,6 +7,7 @@ import Loader from './Loader'
 const NewEvent = () => {
   const [form, setForm] = useState({
     description: '',
+    location: '',
     date: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -79,6 +80,21 @@ const NewEvent = () => {
                     className="w-full rounded bg-gray-200 px-5 py-1 text-gray-700"
                     id="cus_name"
                     name="description"
+                    type="text"
+                    required=""
+                    placeholder=""
+                    aria-label="Name"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="">
+                  <label className="text-gray-00 block text-sm" for="cus_name">
+                    Location
+                  </label>
+                  <input
+                    className="w-full rounded bg-gray-200 px-5 py-1 text-gray-700"
+                    id="cus_name"
+                    name="location"
                     type="text"
                     required=""
                     placeholder=""

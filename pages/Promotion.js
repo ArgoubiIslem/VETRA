@@ -3,11 +3,12 @@ import Link from 'next/link'
 import Headers from '../components/Headers'
 import Footer from '../components/Footer'
 function Promotion() {
-  const [productsData, setProductsData] = useState(null)
+  let prix = 0
+  const [promosData, setPromosData] = useState(null)
   useEffect(() => {
     async function getUser() {
       try {
-        const response = await fetch('http://localhost:3000/api/products')
+        const response = await fetch('http://localhost:3000/api/Promos')
 
         if (!response.ok) {
           throw new Error(`Error! status: ${response.status}`)
@@ -15,7 +16,7 @@ function Promotion() {
 
         const result = await response.json()
         console.log(result['data'])
-        setProductsData(result['data'])
+        setPromosData(result['data'])
         return result
       } catch (err) {
         console.log(err)
@@ -28,6 +29,7 @@ function Promotion() {
       // make sure to catch any error
       .catch(console.error)
   }, [])
+
   return (
     <div>
       <Headers />
@@ -86,10 +88,10 @@ function Promotion() {
         </div>
         <div className="flex flex-col items-center justify-center "></div>
         <div className=" gap-70 grid  grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 ">
-          {productsData?.map(function (product, i) {
-            console.log(productsData)
+          {promosData?.map(function (promo, i) {
+            console.log(promosData)
             return (
-              <div className="mt-10 flex w-full " key={product._id}>
+              <div className="mt-10 flex w-full " key={promo._id}>
                 <div className="mx-auto ml-10 h-full w-full overflow-x-hidden overflow-y-hidden">
                   <div
                     id="slider"
@@ -97,19 +99,24 @@ function Promotion() {
                   >
                     <div className="relative flex w-full flex-shrink-0 sm:w-auto ">
                       <img
-                        src={product.image}
+                        src={promo.image}
                         className="h-96  w-full object-cover object-center"
                       />
                       <div className="absolute h-full w-full bg-gray-800 bg-opacity-30 p-6">
                         <span class="inline-block rounded bg-[#E4187D] px-2 text-sm text-white">
-                          PROMO
+                          -{promo.remise} %
                         </span>
                         <div className="flex h-full items-end pb-6">
                           <div class="h-23 w-96 bg-gray-800 bg-opacity-50 py-4 px-4">
                             <h3 class="text-md font-semibold text-gray-100">
-                              {product.nom}
+                              {promo.nom}
                             </h3>
-                            <p class="mt-4  text-gray-100">{product.prix}</p>
+                            <p class="mt-4  text-gray-100">
+                              <strike>{promo.prix} DT</strike>
+                            </p>
+                            <p class="mt-4  text-gray-100">
+                              {(prix = (promo.remise * promo.prix) / 100)} DT
+                            </p>
                             <span class="mt-4 flex w-full items-center justify-center rounded bg-yellow-400 py-1 hover:bg-yellow-500">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

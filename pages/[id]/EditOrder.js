@@ -20,7 +20,7 @@ const EditOrder = ({ order }) => {
     if (isSubmitting) {
       console.log(Object.keys(errors).length + 'keys')
       if (Object.keys(errors).length === 0) {
-        updateFournisseur()
+        updateOrder()
       } else {
         alert('please fill the required fields !')
       }
@@ -29,17 +29,14 @@ const EditOrder = ({ order }) => {
   const updateOrder = async () => {
     setIsLoading(true)
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/fournisseurs/${order?.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(form),
-        }
-      )
+      const res = await fetch(`http://localhost:3000/api/order/${order?.id}`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      })
       setTimeout(() => {
         setIsLoading(false)
         alert('Modification avec success')

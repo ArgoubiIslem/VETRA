@@ -1,4 +1,4 @@
-import Evenement from '../../../models/Evenement'
+import Order from '../../../models/Order'
 import dbConnect from '../../../utils/db'
 
 dbConnect()
@@ -11,36 +11,36 @@ export default async (req, res) => {
   switch (method) {
     case 'GET':
       try {
-        const evenement = await Evenement.findById(id)
-        if (!evenement) {
+        const order = await Order.findById(id)
+        if (!order) {
           return res.status(400).json({ success: false })
         }
-        return res.status(200).json({ success: true, data: user })
+        return res.status(200).json({ success: true, data: order })
       } catch (error) {
         return res.status(400).json({ success: false })
       }
       break
     case 'PUT':
       try {
-        const evenement = await Evenement.findByIdAndUpdate(id, req.body, {
+        const order = await Order.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,
         })
-        if (!evenement) {
+        if (!order) {
           return res.status(400).json({ success: false })
         }
-        res.status(200).json({ success: true, data: evenement })
+        res.status(200).json({ success: true, data: order })
       } catch (error) {
         res.status(400).json({ success: false })
       }
       break
     case 'DELETE':
       try {
-        const deleteEvenement = await Evenement.deleteOne({ _id: id })
-        if (!deleteEvenement) {
+        const deleteOrder = await Order.deleteOne({ _id: id })
+        if (!deleteOrder) {
           return res.status(400).json({ success: false })
         }
-        res.status(200).json({ success: true, data: User })
+        res.status(200).json({ success: true, data: Order })
       } catch (error) {
         res.status(400).json({ success: false })
       }

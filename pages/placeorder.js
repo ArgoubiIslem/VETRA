@@ -74,10 +74,15 @@ export default function PlaceOrder() {
           },
         }
       )
+      const message = 'your order has been placed'
+      await axios
+        .get(
+          `http://api.somatel.ovh/httpApi/httpapi_test_api.jsp?sender=Vetra&&message=${message}%20&&receiver=+216${shippingAddress?.tel}&&apikey=987654321`
+        )
+        .then(router.push(`/order/${data._id}`))
       dispatch({ type: 'CART_CLEAR' })
       Cookies.remove('cartItems')
       setLoading(false)
-      router.push(`/order/${data._id}`)
     } catch (err) {
       setLoading(false)
       enqueueSnackbar(getError(err), { variant: 'error' })
@@ -104,7 +109,7 @@ export default function PlaceOrder() {
               <ListItem>
                 {shippingAddress.fullName}, {shippingAddress.address},{' '}
                 {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                {shippingAddress.country}
+                {shippingAddress.country},{shippingAddress.tel},{' '}
               </ListItem>
             </List>
           </Card>

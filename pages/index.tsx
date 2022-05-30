@@ -28,7 +28,7 @@ export default function Home() {
     
     
     <div className="flex justify-center"><ShopCategorie /></div>
-    <div className="flex justify-center"><Promo /></div>
+    
     <div className="flex justify-center"><  MeilleuresVentes /></div>
     <div className="flex justify-center"> <Info /> </div>
     <div className="flex justify-center"> <NewsLettre /> </div>

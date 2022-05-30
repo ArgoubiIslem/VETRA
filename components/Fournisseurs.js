@@ -84,10 +84,10 @@ function Fournisseurs() {
                 ? setNewFournisseur(true)
                 : setNewFournisseur(false)
             }
-            className="bg-grey-light hover:bg-grey text-grey-darkest inline-flex items-center rounded bg-green-200 py-2 px-4 font-bold"
+            className="bg-grey-light hover:bg-grey text-grey-darkest inline-flex items-center rounded bg-blue-600 py-2 px-4 font-bold text-white"
           >
             <svg
-              className="h-3 w-3 text-black"
+              className="h-3 w-3 text-white"
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -105,12 +105,12 @@ function Fournisseurs() {
           </button>
           {/* </Link> */}
 
-          <button
+          {/* <button
             className="focus:shadow-outline ml-8 rounded bg-blue-500 py-2 px-4 font-bold text-white shadow hover:bg-blue-500 focus:outline-none  "
             type="button"
           >
             Export
-          </button>
+          </button> */}
         </div>
         <div className="min-w-screen flex  min-h-screen  justify-center overflow-hidden bg-gray-100 font-sans  ">
           <div className="w-full lg:w-5/6">

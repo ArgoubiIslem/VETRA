@@ -138,11 +138,12 @@ function Cart() {
                           <Typography variant="h6">
                             Total(
                             {cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                            Produits):DT
+                            Produits):
                             {cartItems.reduce(
                               (a, c) => a + c.quantity * c.prix,
                               0
                             )}
+                            DT
                           </Typography>
                         </ListItem>
                         <ListItem>

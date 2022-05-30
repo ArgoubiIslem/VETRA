@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Confirm, Loader } from 'semantic-ui-react'
-import EditFournisseur from '/pages/[id]/EditFournisseur'
-function FournisseurCard({ fournisseur }) {
+import EditEvenement from '/pages/[id]/EditEvenement'
+function EvenementCard({ evenement }) {
   const [confirm, setConfirm] = useState(false)
   const [showConf, setShowConf] = useState(false)
-  const [updateFournisseurs, setUpdateFournisseurs] = useState(false)
+  const [updateEvenement, setUpdateEvenement] = useState(false)
   const open = () => setConfirm(true)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [updateFournisseur, setUpdateFournisseur] = useState(false)
-  const [fournisseurId, setFournisseurId] = useState()
-
+  const [evenementId, setEvenementId] = useState()
   const close = () => setConfirm(false)
-  const deleteFournisseur = async () => {
+  const deleteEvenement = async () => {
     // const id = router.query.id
     try {
-      await fetch(
-        `http://localhost:3000/api/fournisseurs/${fournisseur?._id}`,
-        {
-          method: 'Delete',
-        }
-      )
+      await fetch(`http://localhost:3000/api/evenements/${evenement?._id}`, {
+        method: 'Delete',
+      })
       window.location.reload(true)
       // router.push("/");
     } catch (error) {
@@ -34,21 +29,24 @@ function FournisseurCard({ fournisseur }) {
 
   useEffect(() => {
     if (isDeleting) {
-      deleteFournisseur()
+      deleteEvenement()
     }
   }, [isDeleting])
 
   return (
     <>
-      {updateFournisseur ? (
-        <EditFournisseur fournisseur={fournisseurId} />
+      {updateEvenement ? (
+        <EditEvenement
+          setUpdateEvenement={setUpdateEvenement}
+          evenement={evenementId}
+        />
       ) : (
         <tr className="border-b border-gray-200 hover:bg-gray-100">
           {isDeleting ? (
             <Loader active />
           ) : (
             <>
-              <td className="whitespace-nowrap py-3 px-6 text-left">
+              <td className=" py-3 px-6 text-left">
                 <div className="flex items-center">
                   <div className="mr-2"></div>
                   <span className="font-medium">#</span>
@@ -57,38 +55,30 @@ function FournisseurCard({ fournisseur }) {
               <td className="py-3 px-6 text-left">
                 <div className="flex items-center">
                   <div className="mr-2"></div>
-                  <span>
-                    {fournisseur.nom} {fournisseur.Prenom}
-                  </span>
+                  <span>{evenement.description}</span>
+                </div>
+              </td>
+              <td className="py-3 px-6 text-left">
+                <div className="flex items-center">
+                  <div className="mr-2"></div>
+                  <span>{evenement.location}</span>
                 </div>
               </td>
               <td className="py-3 px-6 text-center">
                 <div className="flex items-center justify-center">
-                  {fournisseur.email}
+                  {evenement.date}
                 </div>
               </td>
-              <td className="py-3 px-6 text-center">
-                <div className="item-center flex justify-center">
-                  <span className="rounded-full bg-green-200 py-1 px-3 text-xs text-green-600">
-                    {fournisseur.tel}
-                  </span>
-                </div>
-              </td>
-              <td className="py-3 px-6 text-center">
-                <div className="item-center flex justify-center">
-                  {fournisseur.adresse}
-                </div>
-              </td>
+
               <td className="py-3 px-6 text-center">
                 <div className="item-center flex justify-center">
                   <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500"></div>
 
                   <button
                     onClick={() =>
-                      !updateFournisseurs
-                        ? setUpdateFournisseur(true) ||
-                          setFournisseurId(fournisseur)
-                        : setUpdateFournisseur(false)
+                      !updateEvenement
+                        ? setUpdateEvenement(true) || setEvenementId(evenement)
+                        : setUpdateEvenement(false)
                     }
                   >
                     <div className="mr-2 w-4 transform hover:scale-110 hover:text-purple-500">
@@ -129,6 +119,7 @@ function FournisseurCard({ fournisseur }) {
               </td>
             </>
           )}
+
           {showConf ? (
             // <div className="fixed top-0 bottom-0 left-0 right-0 mx-auto h-full w-full items-center justify-center bg-gray-600 bg-opacity-70 ">
             //   <div className="mx-auto grid max-w-4xl items-center gap-10 bg-white py-16 px-8">
@@ -169,7 +160,7 @@ function FournisseurCard({ fournisseur }) {
                   <hr />
                   <div class="ml-auto">
                     <button
-                      onClick={deleteFournisseur}
+                      onClick={deleteEvenement}
                       class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                     >
                       Confirmer
@@ -191,4 +182,4 @@ function FournisseurCard({ fournisseur }) {
   )
 }
 
-export default FournisseurCard
+export default EvenementCard
